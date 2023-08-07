@@ -4,6 +4,10 @@ avi_admin_password: "VMware1!"
 avi_default_password: "VMware1!"
 vcenter_password: "VMware1!"
 ldapbind_password: "{{ avi_admin_password }}"
+controller_name: "avi01c.vmlab.local"
+controller_ip: "192.168.11.73"
+controller_mask: "255.255.255.0"
+controller_gw: "192.168.11.1"
 
 system_configuration:
   dns_configuration:
