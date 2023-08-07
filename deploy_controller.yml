@@ -1,6 +1,7 @@
 ---
 - name: "Deploy Controller in vCenter"
-  hosts: all
+  hosts: localhost 
+  connection: local
   vars_files:
     - "deploy.yml"
     - "generic.yml"
@@ -20,7 +21,7 @@
         ovf: '{{ build_path + controller_version + "/" + build_name + "/controller.ova" }}'
         validate_certs: "no"
         folder: '{{ cloud_parameters.datacenter + "/vm/" + cloud_parameters.controller_folder }}'
-        properties: '{ u"avi.mgmt-ip.CONTROLLER":u"{{ controller_ip }}", u"avi.mgmt-mask.CONTROLLER":u"{{ controller_mask }}", u"avi.default-gw.CONTROLLER":u"{{ controller_gw }}"}'
+        properties: '{ u"avi.mgmt-ip.CONTROLLER":u"{{ controller_ip }}", u"avi.mgmt-mask.CONTROLLER":u"{{ controller_mask }}", u"avi.default-gw.CONTROLLER":u"{{ controller_gw }}", u"nsxCompatibilityMatrix":u"3.2u"}'
         power_on: "yes"
         allow_duplicates: "no"
 
@@ -35,7 +36,6 @@
       retries: 20
       delay: 30
 
-- break
 - name: "Bootstrap"
   ansible.builtin.import_playbook: bootstrap.yml
 
