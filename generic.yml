@@ -34,14 +34,14 @@ cloud_parameters:
   datacenter: "Datacenter"
   datastore: "vsanDatastore"
   cluster: "vSAN-Cluster"
-  management_network: "dvportgroup-1024:6ec9cb9e-6314-4352-b2ed-3d6e161b4544"
+  management_network: "DSwitch-Management Network"
   management_ip_subnet:
     ip_addr:
       addr: "192.168.11.0"
       type: "V4"
     mask: 24
   management_gateway: "192.168.11.1"
-  controller_network: "dvportgroup-1024:6ec9cb9e-6314-4352-b2ed-3d6e161b4544"
+  controller_network: "DSwitch-Management Network"
   controller_folder: "Controllers"
   no_access_folder: "AviSeFolder"
 
