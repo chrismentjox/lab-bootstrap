@@ -8,7 +8,39 @@ controller_name: "avi01c.vmlab.local"
 controller_ip: "192.168.11.73"
 controller_mask: "255.255.255.0"
 controller_gw: "192.168.11.1"
+cloud_name: "vcsa01a"
 
+cloud_config:
+  use_content_lib: true
+  content_lib:
+    name: "avi"
+    id: "6ec9cb9e-6314-4352-b2ed-3d6e161b4544"
+
+ipam_config:
+  - name: "vip-segment"
+    addr: "192.168.35.0"
+    mask: 24
+    static_ip_ranges:
+      - range:
+          begin:
+            addr: "192.168.35.200"
+            type: "V4"
+          end:
+            addr: "192.168.35.240"
+            type: "V4"
+    add_to_ipam: true
+  - name: "vxw-dvs-34-virtualwire-63-sid-6120062-wdc-06-vc12-avi-dev059"
+    addr: "100.64.67.0"
+    mask: 24
+    static_ip_ranges:
+      - range:
+          begin:
+            addr: "xxxxx"
+            type: "V4"
+          end:
+            addr: "xxxxx"
+            type: "V4"
+    add_to_ipam: true
 system_configuration:
   dns_configuration:
     search_domain: "nordic.fqdn.nl"

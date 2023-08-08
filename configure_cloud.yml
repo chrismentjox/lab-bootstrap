@@ -124,5 +124,3 @@
             internal_profile:
               usable_networks: "{{ usable_networks }}"
 
-- name: "Configure Service Engine Groups"
-  ansible.builtin.import_playbook: configure_segs.yml

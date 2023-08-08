@@ -42,20 +42,23 @@
 - name: "Configure License"
   ansible.builtin.import_playbook: configure_license.yml
 
-- name: "Configure SSL Certificates"
-  ansible.builtin.import_playbook: configure_sslcerts.yml
+#- name: "Configure SSL Certificates"
+#  ansible.builtin.import_playbook: configure_sslcerts.yml
 
-- name: "Configure Portal Certificate"
-  ansible.builtin.import_playbook: configure_portal_cert.yml
+#- name: "Configure Portal Certificate"
+#  ansible.builtin.import_playbook: configure_portal_cert.yml
 
 - name: "Configure vCenter Cloud"
   ansible.builtin.import_playbook: configure_cloud.yml
 
-- name: "Configure DNS Service"
-  ansible.builtin.import_playbook: configure_dns.yml
+#- name: "Configure Service Engine Groups"
+#  ansible.builtin.import_playbook: configure_segs.yml
 
-- name: "Create Persistence Profile"
-  ansible.builtin.import_playbook: create_persistence.yml
+#- name: "Configure DNS Service"
+#  ansible.builtin.import_playbook: configure_dns.yml
 
-- name: "Create Virtual Service"
-  ansible.builtin.import_playbook: create_vs.yml
+#- name: "Create Persistence Profile"
+#  ansible.builtin.import_playbook: create_persistence.yml
+
+#- name: "Create Virtual Service"
+#  ansible.builtin.import_playbook: create_vs.yml
