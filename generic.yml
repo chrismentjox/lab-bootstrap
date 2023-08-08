@@ -15,7 +15,7 @@ avi_credentials:
   controller: "{{ controller_ip }}"
   username: "admin"
   password: "{{ avi_admin_password }}"
-  api_version: "30.2.1"
+  api_version: "22.1.4"
 
 cloud_config:
   use_content_lib: true
@@ -35,6 +35,7 @@ ipam_config:
           end:
             addr: "192.168.35.240"
             type: "V4"
+        type: "STATIC_IPS_FOR_VIP"
     add_to_ipam: true
   - name: "avi-se"
     addr: "192.168.30.0"
@@ -47,6 +48,7 @@ ipam_config:
           end:
             addr: "192.168.30.70"
             type: "V4"
+        type: "STATIC_IPS_FOR_SE"
     add_to_ipam: false
 
 system_configuration:

@@ -1,9 +1,10 @@
 ---
-- hosts: all
+- hosts: localhost 
   vars_files:
     - "upgrade_data.yml"
+    - "generic.yml"
   vars:
-    build_path: '{{ "/mnt/" + (build_location | default("builds")) + "/" }}'
+    build_path: '{{ "/home/ubuntu/" + (build_location | default("builds")) + "/" }}'
   tasks:
     - name: "Checking if base image already uploaded to Controller..."
       vmware.alb.avi_api_session:

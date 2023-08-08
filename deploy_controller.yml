@@ -42,10 +42,10 @@
     #- name: "Configure License"
     #  ansible.builtin.import_playbook: configure_license.yml
 
-#- name: "Configure SSL Certificates"
-#  ansible.builtin.import_playbook: configure_sslcerts.yml
+    #- name: "Configure SSL Certificates"
+    #  ansible.builtin.import_playbook: configure_sslcerts.yml
 
-#- name: "Configure Portal Certificate"
+    #- name: "Configure Portal Certificate"
 #  ansible.builtin.import_playbook: configure_portal_cert.yml
 
     #- name: "Configure vCenter Cloud"
