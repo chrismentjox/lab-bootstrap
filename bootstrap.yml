@@ -15,31 +15,30 @@
         validate_certs: "no"
       register: avi_initial_data
 
-    - name: "Bootstrap Controller"
-      vmware.alb.avi_api_session:
-        avi_credentials:
-          controller: "{{ avi_credentials.controller }}"
-          username: "admin"
-          password: "{{ avi_default_password }}"
-          api_version: "{{ avi_credentials.api_version }}"
-        http_method: "put"
-        validate_certs: "no"
-        path: "useraccount"
-        data:
-          old_password: "{{ avi_default_password }}"
-          password: "{{ avi_admin_password }}"
-      when: avi_initial_data.json.user_initial_setup
-    # - name: "Bootstrap Controller"
-    #   vmware.alb.avi_bootstrap_controller:
-    #     avi_credentials:
-    #       controller: "{{ avi_credentials.controller }}"
-    #       username: "admin"
-    #       password: "{{ avi_default_password }}"
-    #       api_version: "{{ avi_credentials.api_version }}"
-    #     password: "{{ avi_admin_password }}"
-    #     con_wait_time: 3600
-    #     round_wait: 10
-    #     ssh_key_pair: ''
+   # - name: "Bootstrap Controller"
+   #   vmware.alb.avi_api_session:
+   #     avi_credentials:
+   #       controller: "{{ avi_credentials.controller }}"
+   #       username: "admin"
+   #       password: "{{ avi_default_password }}"
+   #       api_version: "{{ avi_credentials.api_version }}"
+   #     http_method: "put"
+   #     path: "useraccount"
+   #     data:
+   #       old_password: "{{ avi_default_password }}"
+   #       password: "{{ avi_admin_password }}"
+   #   when: avi_initial_data.json.user_initial_setup
+     - name: "Bootstrap Controller"
+       vmware.alb.avi_bootstrap_controller:
+         avi_credentials:
+           controller: "{{ avi_credentials.controller }}"
+           username: "admin"
+           password: "{{ avi_default_password }}"
+           api_version: "{{ avi_credentials.api_version }}"
+         password: "{{ avi_admin_password }}"
+         con_wait_time: 3600
+         round_wait: 10
+         ssh_key_pair: ''
     
     - name: "Configure System"
       vmware.alb.avi_systemconfiguration:
