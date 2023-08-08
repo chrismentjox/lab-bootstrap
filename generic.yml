@@ -10,6 +10,12 @@ controller_mask: "255.255.255.0"
 controller_gw: "192.168.11.1"
 cloud_name: "vcsa01a"
 
+avi_credentials:
+  controller: "{{ controller_ip }}"
+  username: "admin"
+  password: "{{ avi_admin_password }}"
+  api_version: "30.2.1"
+
 cloud_config:
   use_content_lib: true
   content_lib:
