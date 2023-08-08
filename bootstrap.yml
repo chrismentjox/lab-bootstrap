@@ -23,6 +23,7 @@
           password: "{{ avi_default_password }}"
           api_version: "{{ avi_credentials.api_version }}"
         http_method: "put"
+        validate_certs: "no"
         path: "useraccount"
         data:
           old_password: "{{ avi_default_password }}"
@@ -52,6 +53,8 @@
         default_license_tier: "{{ license_tier | default('ENTERPRISE') }}"
         admin_auth_configuration: "{{ admin_auth_configuration | default(omit) }}"
         enable_cors: true
+        validate_certs: "no"
+        
 
     - name: "Configure backup passphrase"
       vmware.alb.avi_backupconfiguration:
@@ -61,3 +64,4 @@
         backup_passphrase: "{{ system_configuration.backup_passphrase | default(omit) }}"
         save_local: true
         maximum_backups_stored: 4
+        validate_certs: "no"
