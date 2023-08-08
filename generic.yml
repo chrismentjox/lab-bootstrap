@@ -36,6 +36,19 @@ ipam_config:
             addr: "192.168.35.240"
             type: "V4"
     add_to_ipam: true
+  - name: "avi-se"
+    addr: "192.168.30.0"
+    mask: 24
+    static_ip_ranges:
+      - range:
+          begin:
+            addr: "192.168.30.51"
+            type: "V4"
+          end:
+            addr: "192.168.30.70"
+            type: "V4"
+    add_to_ipam: false
+
 system_configuration:
   dns_configuration:
     search_domain: "nordic.fqdn.nl"
@@ -61,16 +74,62 @@ cloud_parameters:
   datacenter: "Datacenter"
   datastore: "vsanDatastore"
   cluster: "vSAN-Cluster"
-  management_network: "DSwitch-Management Network"
+  management_network: "avi-se"
   management_ip_subnet:
     ip_addr:
-      addr: "192.168.11.0"
+      addr: "192.168.30.0"
       type: "V4"
     mask: 24
-  management_gateway: "192.168.11.1"
+  management_gateway: "192.168.30.1"
   controller_network: "DSwitch-Management Network"
   controller_folder: "Controllers"
   no_access_folder: "AviSeFolder"
+
+seg_config:
+  - name: "Default-Group"
+    max_vs_per_se: 100
+    max_se: 5
+    vcpus_per_se: 1
+    memory_per_se: 2048
+    disk_per_se: 15
+    se_name_prefix: "rcse"
+    vcenter_folder: "Roberto/SEs"
+    vcenter_clusters:
+      host_refs:
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx07.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx08.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx09.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx10.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx11.oc.vmware.com"
+      include: true
+    cpu_reserve: false
+    mem_reserve: false
+    ha_mode: "HA_MODE_SHARED"
+    algo: "PLACEMENT_ALGO_PACKED"
+    buffer_se: 0
+    se_deprovision_delay: 5
+  - name: "GSLB-Group"
+    max_vs_per_se: 1
+    max_se: 1
+    vcpus_per_se: 1
+    memory_per_se: 2048
+    disk_per_se: 15
+    se_name_prefix: "rcseg"
+    vcenter_folder: "Roberto/SEs"
+    vcenter_clusters:
+      host_refs:
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx07.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx08.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx09.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx10.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx11.oc.vmware.com"
+      include: true
+    cpu_reserve: false
+    mem_reserve: false
+    ha_mode: "HA_MODE_SHARED"
+    algo: "PLACEMENT_ALGO_PACKED"
+    buffer_se: 0
+    se_deprovision_delay: 5
 
 vs_parameters:
   name: "rc-ansible-demo"
@@ -108,3 +167,4 @@ ldap_parameters:
         groups:
           - "Avi-Admins"
       is_superuser: true
+

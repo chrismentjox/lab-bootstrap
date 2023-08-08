@@ -39,8 +39,8 @@
 - name: "Bootstrap"
   ansible.builtin.import_playbook: bootstrap.yml
 
-- name: "Configure License"
-  ansible.builtin.import_playbook: configure_license.yml
+    #- name: "Configure License"
+    #  ansible.builtin.import_playbook: configure_license.yml
 
 #- name: "Configure SSL Certificates"
 #  ansible.builtin.import_playbook: configure_sslcerts.yml
@@ -48,8 +48,8 @@
 #- name: "Configure Portal Certificate"
 #  ansible.builtin.import_playbook: configure_portal_cert.yml
 
-- name: "Configure vCenter Cloud"
-  ansible.builtin.import_playbook: configure_cloud.yml
+    #- name: "Configure vCenter Cloud"
+    #  ansible.builtin.import_playbook: configure_cloud.yml
 
 #- name: "Configure Service Engine Groups"
 #  ansible.builtin.import_playbook: configure_segs.yml
