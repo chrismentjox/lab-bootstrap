@@ -23,7 +23,7 @@
         pool_ref: '/api/pool?name={{ item.pool_name }}'
         vsvip_ref: '/api/vsvip/?name={{ item.vsvip_name }}'
         vh_type: "VS_TYPE_VH_SNI"
-        {% if "{{ item.child }}" == "true" %}
+        {% if item.child  %}
         vh_domain_name: "[{{ item.vs_name }}]"
         vh_parent_vs_ref: '/api/virtualservice?name={{ item.vsvip_name }}'
         {% endif %}
