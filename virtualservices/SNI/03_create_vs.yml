@@ -23,8 +23,10 @@
         pool_ref: '/api/pool?name={{ item.pool_name }}'
         vsvip_ref: '/api/vsvip/?name={{ item.vsvip_name }}'
         vh_type: "VS_TYPE_VH_SNI"
-        vh_domain_name: "[{{ item.vs_name }}]" if {{ item.child }}
-        vh_parent_vs_ref: '/api/virtualservice?name={{ item.vsvip_name }}' if {{ item.child }}
+        {% if "{{ item.child }}" == "true" %}
+        vh_domain_name: "[{{ item.vs_name }}]"
+        vh_parent_vs_ref: '/api/virtualservice?name={{ item.vsvip_name }}'
+        {% endif %}
         tenant_ref: '/api/tenant/?name={{ tenant }}'
         cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
        with_items:
