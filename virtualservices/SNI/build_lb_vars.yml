@@ -11,6 +11,8 @@
 
         "avi_vips": [
                 {
+                        "child": false,
+                        "parent": true,
                         "vsvip_name": "SNI-parent-VsVip",
                         "vs_name" : "SNI-parent",
                         "pool_name": "okd_http_ingress_traffic_be",
@@ -31,6 +33,7 @@
                 },
                 {
                         "child": true,
+                        "parent": false,
                         "vsvip_name": "SNI-parent-VsVip",
                         "vs_name" : "sni01.nordic.fqdn.nl",
                         "pool_name": "okd_http_ingress_traffic_be",

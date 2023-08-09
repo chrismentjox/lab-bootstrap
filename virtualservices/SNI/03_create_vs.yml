@@ -8,7 +8,27 @@
   collections:
     - vmware.alb
   tasks:
-     - name: Create virtualservice 
+     - name: Parent Create virtualservice 
+       avi_virtualservice:
+        controller: "{{ avi_controller }}"
+        username: "{{ avi_username }}"
+        password: "{{ avi_password }}"
+        api_version: "{{avi_api_version}}"
+        state: "{{ state}}"
+        name: "{{ item.vs_name }}"
+        performance_limits:
+          max_concurrent_connections: 1000
+        application_profile_ref: '/api/applicationprofile?name={{ httpprofile_name }}'
+        services: "{{ item.service_ports }}"
+        vsvip_ref: '/api/vsvip/?name={{ item.vsvip_name }}'
+        vh_type: "VS_TYPE_VH_SNI"
+        tenant_ref: '/api/tenant/?name={{ tenant }}'
+        cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
+       when: "{{ item.parent }}"
+       with_items:
+         - "{{ avi_vips }}"
+
+     - name: Child Create virtualservice
        avi_virtualservice:
         controller: "{{ avi_controller }}"
         username: "{{ avi_username }}"
@@ -23,11 +43,10 @@
         pool_ref: '/api/pool?name={{ item.pool_name }}'
         vsvip_ref: '/api/vsvip/?name={{ item.vsvip_name }}'
         vh_type: "VS_TYPE_VH_SNI"
-        {% if item.child  %}
         vh_domain_name: "[{{ item.vs_name }}]"
         vh_parent_vs_ref: '/api/virtualservice?name={{ item.vsvip_name }}'
-        {% endif %}
         tenant_ref: '/api/tenant/?name={{ tenant }}'
         cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
+       when: "{{ item.child }}"
        with_items:
          - "{{ avi_vips }}"
