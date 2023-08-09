@@ -36,7 +36,7 @@
                         "parent": false,
                         "vsvip_name": "SNI-parent-VsVip",
                         "vs_name" : "sni01.nordic.fqdn.nl",
-                        "pool_name": "okd_http_ingress_traffic_be",
+                        "pool_name": "SNI-pool",
                         "service_ports": [
                            {
                            "port": "443"
@@ -56,83 +56,22 @@
         ],
         "avi_pools": [
                 {
-                       "pool_name": "okd_https_ingress_traffic_be",
-                       "healthmonitor_name": "System-TCP",
-                       "default_server_port": 443,
-                       "pool_members": [
-                               {
-                                       "ip": { "addr": 192.168.36.105, "type": V4 },
-                                       "hostname": "cm-worker01",
-                               },
-                               {
-                                       "ip": { "addr": 192.168.36.106, "type": V4 },
-                                       "hostname": "cm-worker02",
-                               },
-                        ],
-                },
-                {
-                       "pool_name": "okd_http_ingress_traffic_be",
+                       "pool_name": "SNI-pool",
                        "healthmonitor_name": "System-TCP",
                        "default_server_port": 80,
                        "pool_members": [
                                {
-                                       "ip": { "addr": 192.168.36.105, "type": V4 },
-                                       "hostname": "cm-worker01",
+                                       "ip": { "addr": 192.168.33.10, "type": V4 },
+                                       "hostname": "web01",
                                },
                                {
-                                       "ip": { "addr": 192.168.36.106, "type": V4 },
-                                       "hostname": "cm-worker02",
+                                       "ip": { "addr": 192.168.33.11, "type": V4 },
+                                       "hostname": "web02",
                                },
                         ],
                 },
-                {
-                       "pool_name": "okd_k8s_api_be",
-                       "healthmonitor_name": "System-TCP",
-                       "default_server_port": 6443,
-                       "pool_members": [
-                               {
-                                       "ip": { "addr": 192.168.36.101, "type": V4 },
-                                       "hostname": "okd-bootstrap",
-                               },
-                               {
-                                       "ip": { "addr": 192.168.36.102, "type": V4 },
-                                       "hostname": "cm-master01",
-                               },
-                               {
-                                       "ip": { "addr": 192.168.36.103, "type": V4 },
-                                       "hostname": "cm-master02",
-                               },
-                               {
-                                       "ip": { "addr": 192.168.36.104, "type": V4 },
-                                       "hostname": "cm-master03",
-                               },
-
-                        ],
-                },
-                {
-                       "pool_name": "okd_machine_config_server_be",
-                       "healthmonitor_name": "System-TCP",
-                       "default_server_port": 22623,
-                       "pool_members": [
-                               {
-                                       "ip": { "addr": 192.168.36.101, "type": V4 },
-                                       "hostname": "okd-bootstrap",
-                               },
-                               {
-                                       "ip": { "addr": 192.168.36.102, "type": V4 },
-                                       "hostname": "cm-master01",
-                               },
-                               {
-                                       "ip": { "addr": 192.168.36.103, "type": V4 },
-                                       "hostname": "cm-master02",
-                               },
-                               {
-                                       "ip": { "addr": 192.168.36.104, "type": V4 },
-                                       "hostname": "cm-master03",
-                               },
-
-                        ],
-                },
+            
+               
 
       ],
 }
