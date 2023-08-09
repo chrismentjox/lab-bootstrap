@@ -20,12 +20,15 @@
                            "port": "443"
                            },
                         ],
-                        "ipam_network_subnet":
-                          subnet:
-                            ip_addr:
-                              type: "V4"
-                              addr: "192.168.35.0"
-                            mask: 24
+                        "ipam_network_subnet": {
+                          "subnet": {
+                            "ip_addr": {
+                              "type": "V4",
+                              "addr": "192.168.35.0"
+                              },
+                            "mask": 24
+                            },
+                          },
                 },
                 {
                         "vsvip_name": "okd-ingress",
