@@ -1,0 +1,27 @@
+# Copyright 2018 VMware, Inc.
+# SPDX-License-Identifier: BSD-2-Clause OR GPL-3.0-only
+---
+- hosts: localhost
+  become: no 
+  vars_files:
+    - build_lb_vars.yml
+  collections:
+    - vmware.alb
+  tasks:
+     - name: Create local load balancing pool
+       avi_pool:
+        controller: "{{ avi_controller }}"
+        username: "{{ avi_username }}"
+        password: "{{ avi_password }}"
+        api_version: "{{avi_api_version}}"
+        state: "{{ state }}"
+        name: "{{ item.pool_name }}"
+        tenant_ref: '/api/tenant/?name={{ tenant }}'
+        cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
+        health_monitor_refs:
+          - '/api/healthmonitor?name={{ item.healthmonitor_name }}'
+        lb_algorithm: LB_ALGORITHM_LEAST_CONNECTIONS
+        default_server_port: "{{ item.default_server_port }}"
+        servers: "{{ item.pool_members }}"
+       with_items:
+         - "{{ avi_pools }}"

@@ -1,0 +1,32 @@
+# Copyright 2018 VMware, Inc.
+# SPDX-License-Identifier: BSD-2-Clause OR GPL-3.0-only
+---
+- hosts: localhost
+  become: no 
+  vars_files:
+    - build_lb_vars.yml
+  collections:
+    - vmware.alb
+  tasks:
+     - name: Create vsvip
+       avi_vsvip:
+        controller: "{{ avi_controller }}"
+        username: "{{ avi_username }}"
+        password: "{{ avi_password }}"
+        api_version: "{{avi_api_version}}"
+        state: "{{ state}}"
+        name: "{{ item.vsvip_name }}"
+        tenant_ref: '/api/tenant/?name={{ tenant }}'
+        cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
+        vip:
+          - vip_id: 1
+            enabled: true
+            auto_allocate_floating_ip: false
+            avi_allocated_vip: false
+            auto_allocate_ip: false
+            auto_allocate_ip_type: V4_ONLY
+            ip_address:
+              type: V4
+              addr: "{{ item.vip_ip }}"
+       with_items:
+        - "{{ avi_vips }}"
