@@ -1,0 +1,23 @@
+---
+- name: "Create starttls datascript"
+  hosts: "localhost"
+  connection: "local"
+  vars_files:
+    - "../../generic.yml"
+  tasks:
+    - name: "Create Datascript"
+      vmware.alb.avi_vsdatascriptset:
+        avi_credentials: "{{ avi_credentials | default(omit) }}"
+        api_context: "{{ avi_api_context | default(omit) }}"
+        name: "starttls"
+        datascript:
+          0:
+            evt: 	"VS_DATASCRIPT_EVT_L4_REQUEST"
+            script: "{{lookup('file', './l4request.xml') }}"
+          1:
+            evt: 	"VS_DATASCRIPT_EVT_L4_RESPONSE"
+            script: "{{lookup('file', './l4response.xml') }}"
+          2:
+            evt: 	"VS_DATASCRIPT_EVT_TCP_CLIENT_ACCEPT"
+            script: "{{lookup('file', './access.xml') }}"
+          
