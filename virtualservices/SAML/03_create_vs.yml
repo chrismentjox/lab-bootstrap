@@ -24,7 +24,6 @@
         vsvip_ref: '/api/vsvip/?name={{ item.vsvip_name }}'
         tenant_ref: '/api/tenant/?name={{ tenant }}'
         cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
-        single_signon_url: "https://test2.nordic.fqdn.nl/sso/acs/"
         sso_policy_ref: '/api/ssopolicy/?name=azure-oauth'
         saml_sp_config:
           acs_index: 0
@@ -32,6 +31,7 @@
           cookie_name: "WNYUMFRF"
           cookie_timeout: 60,
           entity_id: "azure-oauth2"
+          single_signon_url: "https://test2.nordic.fqdn.nl/sso/acs/"
 
        with_items:
          - "{{ avi_vips }}"
