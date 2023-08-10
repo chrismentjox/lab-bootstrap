@@ -29,7 +29,7 @@
           acs_index: 0
           authn_req_acs_type: "SAML_AUTHN_REQ_ACS_TYPE_URL"
           cookie_name: "WNYUMFRF"
-          cookie_timeout: 60,
+          cookie_timeout: 60
           entity_id: "azure-oauth2"
           single_signon_url: "https://test2.nordic.fqdn.nl/sso/acs/"
 
