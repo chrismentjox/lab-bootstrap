@@ -4,3 +4,4 @@
 - import_playbook: 03_create_vs.yml
 - import_playbook: 02_create_vsvip.yml
 - import_playbook: 01_create_pool.yml
+- import_playbook: create_auth_profile.yml

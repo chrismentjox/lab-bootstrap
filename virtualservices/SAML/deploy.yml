@@ -1,6 +1,7 @@
 # Copyright 2018 VMware, Inc.
 # SPDX-License-Identifier: BSD-2-Clause OR GPL-3.0-only
 ---
+- import_playbook: create_auth_profile.yml
 - import_playbook: 01_create_pool.yml
 - import_playbook: 02_create_vsvip.yml
 - import_playbook: 03_create_vs.yml
