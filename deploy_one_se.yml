@@ -31,7 +31,7 @@
                 u"Data Network 8":u"{{ se_item.data_nics8.pg_name | default(avi_internal_pg, true) }}",
                 u"Data Network 9":u"{{ se_item.data_nics9.pg_name | default(avi_internal_pg, true) }}"}'
     ovf: "./se.ova"
-    esxi_hostname: "esx03a.vmlab.local"
+    esxi_hostname: "esx01a.vmlab.local"
     validate_certs: "no"
     folder: '{{ cloud_parameters.datacenter + "/vm/" + cloud_parameters.no_access_folder }}'
     properties: '{u"AVICNTRL_CLUSTERUUID":u"{{ cluster_uuid }}",
