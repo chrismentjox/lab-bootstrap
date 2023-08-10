@@ -3,7 +3,7 @@
         "avi_username": "admin",
         "avi_password": "VMware1!",
         "avi_api_version": "22.1.4",
-        "avi_cloud_id": "vcsa01a",
+        "avi_cloud_id": "no-orchestrator",
         "state": "present",
         "tenant": "admin",
         "httpprofile_name": "System-L4-Application",
