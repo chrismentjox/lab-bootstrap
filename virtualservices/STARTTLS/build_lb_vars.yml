@@ -6,17 +6,17 @@
         "avi_cloud_id": "no-orchestrator",
         "state": "present",
         "tenant": "admin",
-        "httpprofile_name": "System-HTTP",
+        "httpprofile_name": "System-SSL-Application",
         "vip_placement_network": "vip-segment",
 
         "avi_vips": [
                 {
-                        "vsvip_name": "test2.nordic.fqdn.nl-VsVip",
-                        "vs_name" : "test2.nordic.fqdn.nl",
-                        "pool_name": "no-orch-vs01-Pool",
+                        "vsvip_name": "starttls-VsVip",
+                        "vs_name" : "starttls",
+                        "pool_name": "starttls-Pool",
                         "service_ports": [
                            {
-                           "port": "443",
+                           "port": "25",
                            "enable_ssl": "true"
                            },
                            {
@@ -37,9 +37,9 @@
         ],
         "avi_pools": [
                 {
-                       "pool_name": "no-orch-vs01-Pool",
+                       "pool_name": "starttls-Pool",
                        "healthmonitor_name": "System-TCP",
-                       "default_server_port": 80,
+                       "default_server_port": 25,
                        "pool_members": [
                                {
                                        "ip": { "addr": 192.168.33.10, "type": V4 },

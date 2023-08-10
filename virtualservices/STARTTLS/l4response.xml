@@ -1,19 +1,44 @@
-side = avi.connection.get_var("data")
-if string.find(side, "server") then
-	msg_done=0 collect=1
-	while (msg_done == 0) do
-		size = avi.l4.collect(collect)
-		msg=avi.l4.read(size) term = string.find(msg, "\r\n")
-		if (term ~= nil) then 
-			msg_done=1  
-		else 
-			collect = size +1 
-		end
-	end
-	s = avi.l4.read(size)
-	avivar = avi.connection.get_var("ehlo")
-	if (avivar=="y" and string.find(s, "STARTTLS")==nil)  then
-		avi.l4.modify("250-STARTTLS\r\n")
-	end
-	avi.connection.set_var("data", "client")
+local state = avi.connection.get_var("state")
+-- execute only if the current state is to process a server response
+if string.find(state, "server", 1, true) == 1 then
+  local msg_received = false
+  local num_bytes = 1
+  local size = 0
+  local msg
+  -- read msg from the socket buffer ensuring msg is one or more complete message lines
+  while not (msg_received) do
+    size = avi.l4.collect(num_bytes)
+    msg = avi.l4.read(size)
+    if string.sub(msg, -2) == '\r\n' then
+      msg_received = true
+    else
+      num_bytes = size + 1
+    end
+  end
+  if msg then
+    if string.find(state, "ready", 1, true) then
+      if string.find(msg, "220", 1, true) == 1 then
+        -- Server has sent welcome message; expect client EHLO next
+        avi.connection.set_var("state", "client-ehlo")
+      end
+    elseif string.find(state, "services", 1, true) then
+      -- Process EHLO OK response
+      if string.find(string.lower(msg), "250-starttls", 1, true) then
+        -- Server says it supports STARTTLS so no need to insert capability
+        avi.vs.log("Server already asserted STARTTLS capability\r\n")
+        state = "server-services-starttlsseen"
+        avi.connection.set_var("state", state)
+      end
+      local last_service = string.find(msg, "250 [%w ]*\r\n")
+      if last_service then
+        if state ~= "server-services-starttlsseen" then
+          -- Insert STARTTLS support in the EHLO OK response if server does not support it
+          avi.l4.modify("250-STARTTLS\r\n", last_service-1)
+          avi.vs.log("Added STARTTLS capability to response\r\n")
+        end
+        -- EHLO OK response complete; client can now send STARTTLS
+        avi.connection.set_var("state", "client-servicessent")
+      end
+    end
+  end
 end
