@@ -11,36 +11,16 @@
 
         "avi_vips": [
                 {
-                        "child": false,
-                        "parent": true,
-                        "vsvip_name": "SNI-parent-VsVip",
-                        "vs_name" : "SNI-parent",
-                        "pool_name": "okd_http_ingress_traffic_be",
+                        "vsvip_name": "test2.nordic.fqdn.nl-VsVip",
+                        "vs_name" : "test2.nordic.fqdn.nl",
+                        "pool_name": "no-orch-vs01-Pool",
                         "service_ports": [
                            {
                            "port": "443",
                            "enable_ssl": "true"
                            },
-                        ],
-                        "ipam_network_subnet": {
-                          "subnet": {
-                            "ip_addr": {
-                              "type": "V4",
-                              "addr": "192.168.35.0"
-                              },
-                            "mask": 24
-                            },
-                          },
-                },
-                {
-                        "child": true,
-                        "parent": false,
-                        "vsvip_name": "SNI-parent-VsVip",
-                        "vs_name" : "sni01.nordic.fqdn.nl",
-                        "pool_name": "SNI-pool",
-                        "service_ports": [
                            {
-                           "port": "443"
+                            "port": "80",
                            },
                         ],
                         "ipam_network_subnet": {
@@ -53,32 +33,11 @@
                             },
                           },
                 },
-                {
-                        "child": true,
-                        "parent": false,
-                        "vsvip_name": "SNI-parent-VsVip",
-                        "vs_name" : "sni02.nordic.fqdn.nl",
-                        "pool_name": "SNI-pool",
-                        "service_ports": [
-                           {
-                           "port": "443"
-                           },
-                        ],
-                        "ipam_network_subnet": {
-                          "subnet": {
-                            "ip_addr": {
-                              "type": "V4",
-                              "addr": "192.168.35.0"
-                              },
-                            "mask": 24
-                            },
-                          },
-                },
-
+                                
         ],
         "avi_pools": [
                 {
-                       "pool_name": "SNI-pool",
+                       "pool_name": "no-orch-vs01-Pool",
                        "healthmonitor_name": "System-TCP",
                        "default_server_port": 80,
                        "pool_members": [
@@ -86,10 +45,7 @@
                                        "ip": { "addr": 192.168.33.10, "type": V4 },
                                        "hostname": "web01",
                                },
-                               {
-                                       "ip": { "addr": 192.168.33.11, "type": V4 },
-                                       "hostname": "web02",
-                               },
+                               
                         ],
                 },
             

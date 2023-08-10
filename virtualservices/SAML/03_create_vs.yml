@@ -8,7 +8,7 @@
   collections:
     - vmware.alb
   tasks:
-     - name: Parent Create virtualservice 
+     - name: Create virtualservice 
        avi_virtualservice:
         controller: "{{ avi_controller }}"
         username: "{{ avi_username }}"
@@ -20,31 +20,18 @@
           max_concurrent_connections: 1000
         application_profile_ref: '/api/applicationprofile?name={{ httpprofile_name }}'
         services: "{{ item.service_ports }}"
-        vsvip_ref: '/api/vsvip/?name={{ item.vsvip_name }}'
-        vh_type: "VS_TYPE_VH_SNI"
-        type: "VS_TYPE_VH_PARENT"
-        tenant_ref: '/api/tenant/?name={{ tenant }}'
-        cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
-       when: "{{ item.parent }}"
-       with_items:
-         - "{{ avi_vips }}"
-
-     - name: Child Create virtualservice
-       avi_virtualservice:
-        controller: "{{ avi_controller }}"
-        username: "{{ avi_username }}"
-        password: "{{ avi_password }}"
-        api_version: "{{avi_api_version}}"
-        state: "{{ state}}"
-        name: "{{ item.vs_name }}"
-        application_profile_ref: '/api/applicationprofile?name={{ httpprofile_name }}'
         pool_ref: '/api/pool?name={{ item.pool_name }}'
-        vh_type: "VS_TYPE_VH_SNI"
-        vh_domain_name: "{{ item.vs_name }}"
-        vh_parent_vs_ref: '/api/virtualservice?name=SNI-parent'
-        type: "VS_TYPE_VH_CHILD"
+        vsvip_ref: '/api/vsvip/?name={{ item.vsvip_name }}'
         tenant_ref: '/api/tenant/?name={{ tenant }}'
         cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
-       when: "{{ item.child }}"
+        single_signon_url: "https://test2.nordic.fqdn.nl/sso/acs/"
+        sso_policy_ref: '/api/ssopolicy/?name=azure-oauth'
+        saml_sp_config:
+          acs_index: 0
+          authn_req_acs_type: "SAML_AUTHN_REQ_ACS_TYPE_URL"
+          cookie_name: "WNYUMFRF"
+          cookie_timeout: 60,
+          entity_id: "azure-oauth2"
+
        with_items:
          - "{{ avi_vips }}"
