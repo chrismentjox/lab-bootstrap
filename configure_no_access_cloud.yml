@@ -59,7 +59,7 @@
 
     - name: "Collate usable subnets"
       ansible.builtin.set_fact:
-        usable_networks: '{{ usable_networks + [{"nw_ref": "/api/network/?name=" + item.name}, {"cloud_ref": "/api/cloud/?name=" + cloud_parameters2.name}] }}'
+        usable_networks: '{{ usable_networks + [{"nw_ref": "/api/network/?name=" + item.name}] }}'
       when: item.add_to_ipam
       loop: "{{ ipam_config }}"
 
