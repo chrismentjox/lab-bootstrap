@@ -1,0 +1,19 @@
+side = avi.connection.get_var("data")
+if string.find(side, "server") then
+	msg_done=0 collect=1
+	while (msg_done == 0) do
+		size = avi.l4.collect(collect)
+		msg=avi.l4.read(size) term = string.find(msg, "\r\n")
+		if (term ~= nil) then 
+			msg_done=1  
+		else 
+			collect = size +1 
+		end
+	end
+	s = avi.l4.read(size)
+	avivar = avi.connection.get_var("ehlo")
+	if (avivar=="y" and string.find(s, "STARTTLS")==nil)  then
+		avi.l4.modify("250-STARTTLS\r\n")
+	end
+	avi.connection.set_var("data", "client")
+end

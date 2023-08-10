@@ -1,0 +1,3 @@
+avi.ssl.disable_ssl()
+avi.connection.set_var("ehlo", "n")
+avi.connection.set_var("data", "server")

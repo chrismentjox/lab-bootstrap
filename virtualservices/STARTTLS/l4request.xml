@@ -1,0 +1,25 @@
+side = avi.connection.get_var("data")
+if string.find(side, "client") then
+	msg_done=0 collect=1 
+	while (msg_done == 0) do
+		size = avi.l4.collect(collect) 
+		msg=avi.l4.read(size) term = string.find(msg, "\r\n")
+		if (term ~= nil) then 
+			msg_done=1  
+		else 
+			collect = size +1
+		end
+	end
+	s = avi.l4.read(size)
+	if s ~= nil then
+		if string.find(s, "EHLO")~=nil then
+			avi.connection.set_var("ehlo", "y")
+		elseif string.find(s, "STARTTLS")~=nil then
+			avi.l4.discard(size)
+			avi.l4.send("220 Ready to start TLS\r\n")
+			avi.ssl.enable_ssl()
+			avi.connection.set_var("ehlo", "n")
+		end
+	end
+	avi.connection.set_var("data", "server")
+end
