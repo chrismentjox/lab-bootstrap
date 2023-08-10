@@ -1,12 +1,12 @@
 ---
 - name: "Deploy No Access Service Engines"
-  hosts: all
+  hosts: localhost
   vars_files:
     - "generic.yml"
   tasks:
     - name: "Set some facts"
       ansible.builtin.set_fact:
-        cloud_uuid: '{{ lookup("avi", avi_credentials=avi_credentials, obj_name=cloud_name, obj_type="cloud").uuid }}'
+        cloud_uuid: '{{ lookup("avi", avi_credentials=avi_credentials, obj_name=cloud_name_no_access, obj_type="cloud").uuid }}'
         cluster_uuid: '{{ lookup("avi", avi_credentials=avi_credentials, obj_type="cluster").uuid }}'
       delegate_to: "localhost"
 
