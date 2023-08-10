@@ -7,7 +7,7 @@
   vars:
     usable_networks: []
     create_dns_provider: "{{ (dns_config.service_domains|default([]))|length>0 }}"
-    network:
+    network: []
    
 
   tasks:
