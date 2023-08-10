@@ -1,0 +1,50 @@
+# Copyright 2018 VMware, Inc.
+# SPDX-License-Identifier: BSD-2-Clause OR GPL-3.0-only
+---
+- hosts: localhost
+  become: no 
+  vars_files:
+    - build_lb_vars.yml
+  collections:
+    - vmware.alb
+  tasks:
+     - name: Parent Create virtualservice 
+       avi_virtualservice:
+        controller: "{{ avi_controller }}"
+        username: "{{ avi_username }}"
+        password: "{{ avi_password }}"
+        api_version: "{{avi_api_version}}"
+        state: "{{ state}}"
+        name: "{{ item.vs_name }}"
+        performance_limits:
+          max_concurrent_connections: 1000
+        application_profile_ref: '/api/applicationprofile?name={{ httpprofile_name }}'
+        services: "{{ item.service_ports }}"
+        vsvip_ref: '/api/vsvip/?name={{ item.vsvip_name }}'
+        vh_type: "VS_TYPE_VH_SNI"
+        type: "VS_TYPE_VH_PARENT"
+        tenant_ref: '/api/tenant/?name={{ tenant }}'
+        cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
+       when: "{{ item.parent }}"
+       with_items:
+         - "{{ avi_vips }}"
+
+     - name: Child Create virtualservice
+       avi_virtualservice:
+        controller: "{{ avi_controller }}"
+        username: "{{ avi_username }}"
+        password: "{{ avi_password }}"
+        api_version: "{{avi_api_version}}"
+        state: "{{ state}}"
+        name: "{{ item.vs_name }}"
+        application_profile_ref: '/api/applicationprofile?name={{ httpprofile_name }}'
+        pool_ref: '/api/pool?name={{ item.pool_name }}'
+        vh_type: "VS_TYPE_VH_SNI"
+        vh_domain_name: "{{ item.vs_name }}"
+        vh_parent_vs_ref: '/api/virtualservice?name=SNI-parent'
+        type: "VS_TYPE_VH_CHILD"
+        tenant_ref: '/api/tenant/?name={{ tenant }}'
+        cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
+       when: "{{ item.child }}"
+       with_items:
+         - "{{ avi_vips }}"
