@@ -1,0 +1,76 @@
+---
+- name: "Deploy NO access Cloud"
+  hosts: "localhost"
+  connection: "local"
+  vars_files:
+    - "generic.yml"
+  vars:
+    usable_networks: []
+    create_dns_provider: "{{ (dns_config.service_domains|default([]))|length>0 }}"
+
+  tasks:
+    - name: "Create Avi IPAM Provider"
+      vmware.alb.avi_ipamdnsproviderprofile:
+        avi_credentials: "{{ avi_credentials | default(omit) }}"
+        api_context: "{{ avi_api_context | default(omit) }}"
+        name: '{{ "VMware-IPAM-" + cloud_parameters2.name }}'
+        type: "IPAMDNS_TYPE_INTERNAL"
+        allocate_ip_in_vrf: false
+      register: ipamprovider
+
+    - name: "Create Avi DNS Provider"
+      vmware.alb.avi_ipamdnsproviderprofile:
+        avi_credentials: "{{ avi_credentials | default(omit) }}"
+        api_context: "{{ avi_api_context | default(omit) }}"
+        name: '{{ "VMware-DNS-" + cloud_parameters2.name }}'
+        type: IPAMDNS_TYPE_INTERNAL_DNS
+        internal_profile:
+          dns_service_domain: "{{ dns_config.service_domains }}"
+      when: create_dns_provider
+
+    - name: "Configure No access Cloud"
+      vmware.alb.avi_cloud:
+        avi_credentials: "{{ avi_credentials | default(omit) }}"
+        api_context: "{{ avi_api_context | default(omit) }}"
+        name: "{{ cloud_parameters2.name }}"
+        vtype: "CLOUD_NONE"
+        ipam_provider_ref: "{{ ipamprovider.obj.url }}"
+        dns_provider_ref: '{{ "/api/ipamdnsproviderprofile/?name=VMware-DNS-" + cloud_parameters2.name if create_dns_provider else None }}'
+      register: cloud
+
+    - name: "Configure networks"
+      vmware.alb.avi_network:
+        avi_credentials: "{{ avi_credentials | default(omit) }}"
+        api_context: "{{ avi_api_context | default(omit) }}"
+        name: "{{ item.name }}"
+        cloud_ref: '{{ "/api/cloud/?name=" + cloud_parameters2.name }}'
+        dhcp_enabled: false
+        ip6_autocfg_enabled: false
+        exclude_discovered_subnets: true
+        configured_subnets:
+          - prefix:
+              ip_addr:
+                addr: "{{ item.addr }}"
+                type: "V4"
+              mask: "{{ item.mask }}"
+            static_ip_ranges: "{{ item.static_ip_ranges | default(omit) }}"
+            static_ranges: "{{ item.static_ranges | default(omit) }}"
+      loop: "{{ ipam_config }}"
+
+    - name: "Collate usable subnets"
+      ansible.builtin.set_fact:
+        usable_networks: '{{ usable_networks + [{"nw_ref": "/api/network/?name=" + item.name}] }}'
+      when: item.add_to_ipam
+      loop: "{{ ipam_config }}"
+
+    - name: "Add usable subnets to IPAM"
+      vmware.alb.avi_api_session:
+        avi_credentials: "{{ avi_credentials | default(omit) }}"
+        api_context: "{{ avi_api_context | default(omit) }}"
+        http_method: "patch"
+        path: '{{ "ipamdnsproviderprofile/" + ipamprovider.obj.uuid }}'
+        data:
+          replace:
+            internal_profile:
+              usable_networks: "{{ usable_networks }}"
+

@@ -10,6 +10,7 @@ controller_ip: "192.168.11.73"
 controller_mask: "255.255.255.0"
 controller_gw: "192.168.11.1"
 cloud_name: "vcsa01a"
+cloud_name_no_access: "no-orchestrator"
 
 avi_credentials:
   controller: "{{ controller_ip }}"
@@ -86,6 +87,10 @@ cloud_parameters:
   controller_network: "DSwitch-Management Network"
   controller_folder: "Controllers"
   no_access_folder: "AviSeFolder"
+
+cloud_parameters2:
+  name: '{{ cloud_name_no_access | default("Default-Cloud") }}'
+  
 
 seg_config:
   - name: "Default-Group"
