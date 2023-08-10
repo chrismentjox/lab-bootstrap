@@ -17,7 +17,7 @@
     username: "{{ cloud_parameters.username }}"
     password: "{{ cloud_parameters.password }}"
     datacenter: "{{ cloud_parameters.datacenter }}"
-    cluster: "{{ cloud_parameters.cluster }}"
+    #cluster: "{{ cloud_parameters.cluster }}"
     datastore: "{{ cloud_parameters.datastore }}"
     name: "{{ se_item.name }}"
     networks: '{u"Management":u"{{ se_mgmt_pg }}",
@@ -31,6 +31,7 @@
                 u"Data Network 8":u"{{ se_item.data_nics8.pg_name | default(avi_internal_pg, true) }}",
                 u"Data Network 9":u"{{ se_item.data_nics9.pg_name | default(avi_internal_pg, true) }}"}'
     ovf: "./se.ova"
+    esxi_hostname: "esx03a.vmlab.local"
     validate_certs: "no"
     folder: '{{ cloud_parameters.datacenter + "/vm/" + cloud_parameters.no_access_folder }}'
     properties: '{u"AVICNTRL_CLUSTERUUID":u"{{ cluster_uuid }}",
