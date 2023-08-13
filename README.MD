@@ -1,5 +1,4 @@
-These are the Ansible playbooks I use to deploy my lab environments.
-
-Inventory contains a remote host in the lab environment, primarily for remoting tasks that require large file copies
-
-e.g. ansible-playbook deploy_controller.yml -e @my-controller.yml -i inventory
+ansible-playbook deploy_controller.yml
+ansible-playbook upgrade.yml
+ansible-playbook configure_no_access_cloud.yml
+ansible-playbook deploy_ses.yml

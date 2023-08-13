@@ -1,5 +1,5 @@
 {
-        "avi_controller": "192.168.11.73",
+        "avi_controller": "192.168.11.71",
         "avi_username": "admin",
         "avi_password": "VMware1!",
         "avi_api_version": "22.1.4",
