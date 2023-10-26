@@ -9,32 +9,45 @@ se_group: "Default-Group"
 se_mgmt_pg: "avi-se"
 avi_internal_pg: "avi-se"
 se_list:
-  - ip: "192.168.30.30"
-    name: "cm-na-01"
+  #  - ip: "192.168.30.30"
+  #    name: "cm-na-01"
+  #    data_nics1:
+  #   pg_name: "web-front"
+  #   ip: "192.168.33.5"
+  #   mask: 24
+  # data_nics2:
+  #   pg_name: "vip-segment"
+  #   ip: "192.168.35.5"
+  #   mask: 24
+  # data_nics3:
+  #   pg_name: "okd"
+  #   ip: "192.168.36.5"
+  #   mask: 24
+  #  - ip: "192.168.30.31"
+  # name: "cm-na-02"
+  # data_nics1:
+  #   pg_name: "web-front"
+  #   ip: "192.168.33.6"
+  #   mask: 24
+  # data_nics2:
+  #   pg_name: "vip-segment"
+  #   ip: "192.168.35.6"
+  #   mask: 24
+  # data_nics3:
+  #   pg_name: "okd"
+  #   ip: "192.168.36.6"
+  #   mask: 24
+  - ip: "192.168.30.32"
+    name: "cm-na-03"
     data_nics1:
       pg_name: "web-front"
-      ip: "192.168.33.5"
+      ip: "192.168.33.7"
       mask: 24
     data_nics2:
       pg_name: "vip-segment"
-      ip: "192.168.35.5"
+      ip: "192.168.35.7"
       mask: 24
     data_nics3:
       pg_name: "okd"
-      ip: "192.168.36.5"
-      mask: 24
-  - ip: "192.168.30.31"
-    name: "cm-na-02"
-    data_nics1:
-      pg_name: "web-front"
-      ip: "192.168.33.6"
-      mask: 24
-    data_nics2:
-      pg_name: "vip-segment"
-      ip: "192.168.35.6"
-      mask: 24
-    data_nics3:
-      pg_name: "okd"
-      ip: "192.168.36.6"
-      mask: 24
-  
+      ip: "192.168.36.7"
+      mask: 24  
