@@ -1,7 +1,7 @@
 # code: language=ansible
 ---
 build_location: "rel-builds"
-controller_version: "22.1.4"
+controller_version: "22.1.5"
 build_name: "last-released"
 num_cpu: "8"
 mem: "24"

@@ -41,6 +41,11 @@
       register: se_image_status
       delegate_to: "localhost"
 
+    - name: "Check if SE image already exists"
+      stat:
+        path: '{{ "./se.ova" }}'
+      register: se_exist
+
     - name: "Download SE image from Controller"
       vmware.alb.avi_api_fileservice:
         avi_credentials: "{{ avi_credentials | default(omit) }}"
@@ -52,6 +57,7 @@
           cloud_uuid: "{{ cloud_uuid }}"
           file_format: "ova"
         file_path: '{{ "./se.ova" }}'
+      when: not se_exist.stat.exists
 
     - name: Create SE VMs
       ansible.builtin.include_tasks: deploy_one_se.yml

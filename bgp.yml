@@ -11,11 +11,12 @@
         avi_credentials: "{{ avi_credentials | default(omit) }}"
         api_context: "{{ avi_api_context | default(omit) }}"
         name: "global"
+        cloud_ref: "/api/cloud/?name=no-orchestrator"
         bgp_profile:
           hold_time: 180
           ibgp: false
           keepalive_interval: 60
-          local_as: 67002
+          local_as: 65110
           peers:
             - advertise_snat_ip: true
               advertise_vip: true
@@ -24,16 +25,26 @@
               connect_timer: 10
               ebgp_multihop: 0
               md5_secret: ''
-              network_ref: "/api/network/?name=vxw-dvs-34-virtualwire-62-sid-6120061-wdc-06-vc12-avi-dev058"
+              ebgp_multihop: 6
               peer_ip:
-                addr: "100.64.66.254"
+                addr: "192.168.15.2"
                 type: "V4"
-              remote_as: 67001
+              remote_as: 65101
               shutdown: false
               subnet:
                 ip_addr:
-                  addr: "100.64.66.0"
+                  addr: "192.168.35.0"
                   type: "V4"
                 mask: 24
           send_community: true
           shutdown: false
+        static_routes:
+          - next_hop:
+              addr: "192.168.35.1"
+              type: "V4"
+            prefix:
+              ip_addr:
+                addr: "0.0.0.0"
+                type: "V4"
+              mask: 0
+            route_id: 1
