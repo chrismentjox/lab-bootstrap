@@ -1,0 +1,39 @@
+# code: language=ansible
+---
+cloud_name: "no-orchestrator"
+se_mask: "255.255.255.0"
+se_gw: "192.168.30.1"
+se_dns: "SERVERS:192.168.11.2;DOMAIN:nordic.fqdn.nl"
+specify_cloud: true
+se_group: "Default-Group"
+se_mgmt_pg: "avi-se"
+avi_internal_pg: "avi-se"
+se_list:
+  - ip: "192.168.30.40"
+    name: "cm-dc2-01"
+    data_nics1:
+      pg_name: "dc2-web-front"
+      ip: "192.168.133.5"
+      mask: 24
+    data_nics2:
+      pg_name: "dc2-vip-segment"
+      ip: "192.168.135.5"
+      mask: 24
+    data_nics3:
+      pg_name: "dc2-okd"
+      ip: "192.168.136.5"
+      mask: 24
+  - ip: "192.168.30.41"
+    name: "cm-dc2-02"
+    data_nics1:
+      pg_name: "dc2-web-front"
+      ip: "192.168.133.6"
+      mask: 24
+    data_nics2:
+      pg_name: "dc2-vip-segment"
+      ip: "192.168.135.6"
+      mask: 24
+    data_nics3:
+      pg_name: "dc2-okd"
+      ip: "192.168.36.6"
+      mask: 24

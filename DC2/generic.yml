@@ -1,0 +1,177 @@
+# code: language=ansible
+---
+avi_admin_password: "VMware1!"
+avi_default_password: "VMware1!"
+old_password: "58NFaGDJm(PJH0G"
+vcenter_password: "VMware1!"
+ldapbind_password: "{{ avi_admin_password }}"
+controller_name: "avi01b.vmlab.local"
+controller_ip: "192.168.11.72"
+controller_mask: "255.255.255.0"
+controller_gw: "192.168.11.1"
+cloud_name: "vcsa01a"
+cloud_name_no_access: "no-orchestrator"
+
+avi_credentials:
+  controller: "{{ controller_ip }}"
+  username: "admin"
+  password: "{{ avi_admin_password }}"
+  api_version: "22.1.6"
+
+cloud_config:
+  use_content_lib: true
+  content_lib:
+    name: "avi"
+    id: "3b6c89c4-d8ea-4808-8928-2c2f58371a47"
+
+ipam_config:
+  - name: "dc2-vip-segment"
+    addr: "192.168.135.0"
+    mask: 24
+    static_ip_ranges:
+      - range:
+          begin:
+            addr: "192.168.135.200"
+            type: "V4"
+          end:
+            addr: "192.168.135.240"
+            type: "V4"
+        type: "STATIC_IPS_FOR_VIP"
+    add_to_ipam: true
+  - name: "avi-se"
+    addr: "192.168.130.0"
+    mask: 24
+    static_ip_ranges:
+      - range:
+          begin:
+            addr: "192.168.30.71"
+            type: "V4"
+          end:
+            addr: "192.168.30.80"
+            type: "V4"
+        type: "STATIC_IPS_FOR_SE"
+    add_to_ipam: false
+
+system_configuration:
+  dns_configuration:
+    search_domain: "nordic.fqdn.nl"
+    server_list:
+      - addr: "192.168.11.2"
+        type: "V4"
+  ntp_configuration:
+    ntp_servers:
+      - server:
+          addr: "192.24.67.138"
+          type: "V4"
+  global_tenant_config:
+    se_in_provider_context: true
+    tenant_access_to_provider_se: true
+    tenant_vrf: false
+  backup_passphrase: '{{ avi_admin_password }}'
+
+cloud_parameters:
+  name: '{{ cloud_name | default("Default-Cloud") }}'
+  vcenter: "192.168.11.10"
+  username: "administrator@vsphere.local"
+  password: "{{ vcenter_password }}"
+  datacenter: "Datacenter"
+  datastore: "vsanDatastore"
+  cluster: "vSAN-Cluster"
+  management_network: "avi-se"
+  management_ip_subnet:
+    ip_addr:
+      addr: "192.168.30.0"
+      type: "V4"
+    mask: 24
+  management_gateway: "192.168.30.1"
+  controller_network: "DSwitch-Management Network"
+  controller_folder: "Controllers"
+  no_access_folder: "AviSeFolder"
+
+cloud_parameters2:
+  name: '{{ cloud_name_no_access | default("Default-Cloud") }}'
+  
+
+seg_config:
+  - name: "Default-Group"
+    max_vs_per_se: 100
+    max_se: 5
+    vcpus_per_se: 1
+    memory_per_se: 2048
+    disk_per_se: 15
+    se_name_prefix: "rcse"
+    vcenter_folder: "Roberto/SEs"
+    vcenter_clusters:
+      host_refs:
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx07.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx08.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx09.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx10.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx11.oc.vmware.com"
+      include: true
+    cpu_reserve: false
+    mem_reserve: false
+    ha_mode: "HA_MODE_SHARED"
+    algo: "PLACEMENT_ALGO_PACKED"
+    buffer_se: 0
+    se_deprovision_delay: 5
+  - name: "GSLB-Group"
+    max_vs_per_se: 1
+    max_se: 1
+    vcpus_per_se: 1
+    memory_per_se: 2048
+    disk_per_se: 15
+    se_name_prefix: "rcseg"
+    vcenter_folder: "Roberto/SEs"
+    vcenter_clusters:
+      host_refs:
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx07.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx08.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx09.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx10.oc.vmware.com"
+        - "/api/vimgrhostruntime/?name=wdc-06-r08esx11.oc.vmware.com"
+      include: true
+    cpu_reserve: false
+    mem_reserve: false
+    ha_mode: "HA_MODE_SHARED"
+    algo: "PLACEMENT_ALGO_PACKED"
+    buffer_se: 0
+    se_deprovision_delay: 5
+
+vs_parameters:
+  name: "rc-ansible-demo"
+  fqdn: '{{ "rc-ansible-demo" + ("." + dns_config.service_domains[0].domain_name if (dns_config.service_domains|default([]))|length>0 else "") }}'
+  ipam_network_subnet:
+    subnet:
+      ip_addr:
+        type: "V4"
+        addr: "100.64.66.0"
+      mask: 24
+  pool_members:
+    - ip:
+        addr: "100.64.67.71"
+        type: "V4"
+    - ip:
+        addr: "100.64.67.72"
+        type: "V4"
+    - ip:
+        addr: "100.64.67.73"
+        type: "V4"
+
+ldap_parameters:
+  profile_name: "Controller-LDAP-Auth"
+  base_dn: "DC=rc,DC=demo,DC=avi,DC=local"
+  admin_bind_dn: "CN=ldapbind,CN=Users,DC=rc,DC=demo,DC=avi,DC=local"
+  group_search_dn: "DC=rc,DC=demo,DC=avi,DC=local"
+  user_search_dn: "DC=rc,DC=demo,DC=avi,DC=local"
+  password: "{{ ldapbind_password }}"
+  servers:
+    - "10.206.112.66"
+  mapping_rules:
+    - index: 1
+      group_match:
+        criteria: "AUTH_MATCH_CONTAINS"
+        groups:
+          - "Avi-Admins"
+      is_superuser: true
+

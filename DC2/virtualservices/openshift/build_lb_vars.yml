@@ -1,0 +1,140 @@
+{
+        "avi_controller": "192.168.11.72",
+        "avi_username": "admin",
+        "avi_password": "VMware1!",
+        "avi_api_version": "22.1.6",
+        "avi_cloud_id": "no-orchestrator",
+        "state": "present",
+        "tenant": "admin",
+        "httpprofile_name": "System-L4-Application",
+        "vip_placement_network": "vip-segment",
+
+        "avi_vips": [
+                {
+                        "vsvip_name": "okd-ingress",
+                        "vs_name" : "okd_http_ingress_traffic_fe",
+                        "pool_name": "okd_http_ingress_traffic_be",
+                        "vip_ip": "192.168.135.102",
+                        "service_ports": [
+                           {
+                           "port": "80"
+                           },
+                        ],
+                },
+                {
+                        "vsvip_name": "okd-ingress",
+                        "vs_name" : "okd_https_ingress_traffic_fe",
+                        "pool_name": "okd_https_ingress_traffic_be",
+                        "vip_ip": "192.168.135.102",
+                        "service_ports": [
+                           {
+                           "port": "443"
+                           },
+                        ],
+                },
+                {
+                        "vsvip_name": "okd-vip",
+                        "vs_name" : "okd_k8s_api_fe",
+                        "pool_name": "okd_k8s_api_be",
+                        "vip_ip": "192.168.135.101",
+                        "service_ports": [
+                           {
+                           "port": "6443"
+                           },
+                        ],
+                },
+                {
+                        "vsvip_name": "okd-vip",
+                        "vs_name" : "okd_machine_config_server_fe",
+                        "pool_name": "okd_machine_config_server_be",
+                        "vip_ip": "192.168.135.101",
+                        "service_ports": [
+                           {
+                           "port": "22623"
+                           },
+                        ],
+                },
+
+        ],
+        "avi_pools": [
+                {
+                       "pool_name": "okd_https_ingress_traffic_be",
+                       "healthmonitor_name": "System-TCP",
+                       "default_server_port": 443,
+                       "pool_members": [
+                               {
+                                       "ip": { "addr": 192.168.136.105, "type": V4 },
+                                       "hostname": "cm-worker01",
+                               },
+                               {
+                                       "ip": { "addr": 192.168.136.106, "type": V4 },
+                                       "hostname": "cm-worker02",
+                               },
+                        ],
+                },
+                {
+                       "pool_name": "okd_http_ingress_traffic_be",
+                       "healthmonitor_name": "System-TCP",
+                       "default_server_port": 80,
+                       "pool_members": [
+                               {
+                                       "ip": { "addr": 192.168.136.105, "type": V4 },
+                                       "hostname": "cm-worker01",
+                               },
+                               {
+                                       "ip": { "addr": 192.168.136.106, "type": V4 },
+                                       "hostname": "cm-worker02",
+                               },
+                        ],
+                },
+                {
+                       "pool_name": "okd_k8s_api_be",
+                       "healthmonitor_name": "System-TCP",
+                       "default_server_port": 6443,
+                       "pool_members": [
+                               {
+                                       "ip": { "addr": 192.168.136.101, "type": V4 },
+                                       "hostname": "okd-bootstrap",
+                               },
+                               {
+                                       "ip": { "addr": 192.168.136.102, "type": V4 },
+                                       "hostname": "cm-master01",
+                               },
+                               {
+                                       "ip": { "addr": 192.168.136.103, "type": V4 },
+                                       "hostname": "cm-master02",
+                               },
+                               {
+                                       "ip": { "addr": 192.168.136.104, "type": V4 },
+                                       "hostname": "cm-master03",
+                               },
+
+                        ],
+                },
+                {
+                       "pool_name": "okd_machine_config_server_be",
+                       "healthmonitor_name": "System-TCP",
+                       "default_server_port": 22623,
+                       "pool_members": [
+                               {
+                                       "ip": { "addr": 192.168.136.101, "type": V4 },
+                                       "hostname": "okd-bootstrap",
+                               },
+                               {
+                                       "ip": { "addr": 192.168.136.102, "type": V4 },
+                                       "hostname": "cm-master01",
+                               },
+                               {
+                                       "ip": { "addr": 192.168.136.103, "type": V4 },
+                                       "hostname": "cm-master02",
+                               },
+                               {
+                                       "ip": { "addr": 192.168.136.104, "type": V4 },
+                                       "hostname": "cm-master03",
+                               },
+
+                        ],
+                },
+
+      ],
+}
