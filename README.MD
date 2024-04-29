@@ -3,6 +3,8 @@ ansible-playbook upgrade.yml
 ansible-playbook configure_no_access_cloud.yml
 ansible-playbook deploy_ses.yml
 
+#Configure Vault Alert script.
+ansible-playbook configure_vault.yml
 
 For installing openshift user
 
@@ -15,5 +17,6 @@ For installing openshift user
   This creates the openshift cluster
 - When the bootstrap and master are booting, add them to the AVI pool.
 - When the worker node is booting, check the ip and add to AVI pool.
+
 
 
