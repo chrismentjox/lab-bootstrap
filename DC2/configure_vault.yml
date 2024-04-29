@@ -28,7 +28,7 @@
         - is_dynamic: false
           is_sensitive: true
           name: "vault_token"
-          value: ""
+          value: "hvs.aMZLqgQmCYkWuU8t9Nug4upk"
         - is_dynamic: false
           is_sensitive: false
           name: "vault_path"
