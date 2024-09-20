@@ -3,6 +3,7 @@ ansible-playbook upgrade.yml
 ansible-playbook configure_no_access_cloud.yml
 ansible-playbook deploy_ses.yml
 
+DO NOT forget to SET search domain to vmlab.local
 #Configure Vault Alert script.
 ansible-playbook configure_vault.yml
 

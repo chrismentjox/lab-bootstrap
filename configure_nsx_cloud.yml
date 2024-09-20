@@ -1,5 +1,5 @@
 ---
-- name: "Deploy vSphere Cloud"
+- name: "Deploy NSX Cloud"
   hosts: "localhost"
   connection: "local"
   vars_files:
@@ -35,25 +35,25 @@
         dhcp_enabled: false
         ipam_provider_ref: "{{ ipamprovider.obj.url }}"
         dns_provider_ref: '{{ "/api/ipamdnsproviderprofile/?name=VMware-DNS-" + cloud_parameters.name if create_dns_provider else None }}'
-        name: "nsxt"
+        name: "nsx01a"
         nsxt_configuration:
           automate_dfw_rules: false
           data_network_config:
             tier1_segment_config:
               manual:
                 tier1_lrs:
-                - segment_id: "/infra/segments/tenant1-se"
-                  tier1_lr_id: "/infra/tier-1s/tenent1"
+                - segment_id: "/infra/segments/se-datasegment"
+                  tier1_lr_id: "/infra/tier-1s/t1"
               segment_config_mode: "TIER1_SEGMENT_MANUAL"
-            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/1b3a2f36-bfd1-443e-a0f6-4de01abc963e"
+            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/a18d6fa9-ef30-4c44-b8a8-bf45c6b32360"
             tz_type: "OVERLAY"
           management_network_config:
             overlay_segment:
               segment_id: "/infra/segments/avi-se"
-              tier1_lr_id: "/infra/tier-1s/lab-mgmt"
-            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/1b3a2f36-bfd1-443e-a0f6-4de01abc963e"
+              tier1_lr_id: "/infra/tier-1s/t1"
+            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/a18d6fa9-ef30-4c44-b8a8-bf45c6b32360"
             tz_type: "OVERLAY"
-          nsxt_credentials_ref: "https://avi01a.vmlab.local/api/cloudconnectoruser/cloudconnectoruser-fda20e10-1a03-440f-b240-f4790a5cb172"
+          nsxt_credentials_ref: "https://avi01a.vmlab.local/api/cloudconnectoruser/cloudconnectoruser-f9dbe3f3-c6b7-4135-8ff0-8ccc14e3e95d"
           nsxt_url: "192.168.11.21"
           site_id: "default"
           domain_id: "default"
