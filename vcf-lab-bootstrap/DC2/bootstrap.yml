@@ -1,0 +1,57 @@
+---
+- name: "Initial bootstrap of Controller"
+  hosts: "localhost"
+  connection: "local"
+  vars_files:
+    - "generic.yml"
+
+  tasks:
+    - name: "Check for Initial Setup"
+      ansible.builtin.uri:
+        url: '{{  "https://" + avi_credentials.controller + "/api/initial-data?include-name" }}'
+        method: "get"
+        status_code: 200
+        timeout: 10
+        validate_certs: "no"
+      register: avi_initial_data
+
+        #- name: "Bootstrap Controller"
+        #vmware.alb.avi_bootstrap_controller:
+        #avi_credentials:
+        #  controller: "{{ avi_credentials.controller }}"
+        #  username: "admin"
+          # password: "{{ avi_default_password }}"
+          # api_version: "{{ avi_credentials.api_version }}"
+          #password: "{{ avi_admin_password }}"
+          #con_wait_time: 3600
+          #round_wait: 10
+          #ssh_key_pair: ''
+    
+    - name: "Set Admin user"
+      avi_useraccount:
+        avi_credentials: '{{ avi_credentials }}'
+        old_password: '{{ old_password }}'
+        api_version: '{{ avi_credentials.api_version }}'
+
+    - name: "Configure System"
+      vmware.alb.avi_systemconfiguration:
+        avi_credentials: "{{ avi_credentials | default(omit) }}"
+        api_context: "{{ avi_api_context | default(omit) }}"
+        api_version: "{{ avi_credentials.api_version }}"
+        dns_configuration: "{{ system_configuration.dns_configuration | default(omit) }}"
+        ntp_configuration: "{{ system_configuration.ntp_configuration | default(omit) }}"
+        global_tenant_config: "{{ system_configuration.global_tenant_config | default(omit) }}"
+        welcome_workflow_complete: true
+        default_license_tier: "{{ license_tier | default('ENTERPRISE') }}"
+        admin_auth_configuration: "{{ admin_auth_configuration | default(omit) }}"
+        enable_cors: true
+        
+
+    - name: "Configure backup passphrase"
+      vmware.alb.avi_backupconfiguration:
+        avi_credentials: "{{ avi_credentials | default(omit) }}"
+        api_context: "{{ avi_api_context | default(omit) }}"
+        name: "Backup-Configuration"
+        backup_passphrase: "{{ system_configuration.backup_passphrase | default(omit) }}"
+        save_local: true
+        maximum_backups_stored: 4

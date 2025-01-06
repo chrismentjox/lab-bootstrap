@@ -1,0 +1,36 @@
+---
+- name: "Configure Vault"
+  hosts: "localhost"
+  connection: "local"
+  vars_files:
+    - "generic.yml"
+  vars:
+    contents: "{{ lookup('file', 'vaulcertmanager.py') }}"
+
+  tasks:
+    - name: Create Alert Script to for Vault integration
+      vmware.alb.avi_alertscriptconfig:
+        avi_credentials: "{{ avi_credentials | default(omit) }}"
+        action_script: "{{ contents }}"
+        name: VaultCertManager
+        tenant_ref: /api/tenant?name=admin
+
+    - name: Create CertificateManagementProfile object
+      vmware.alb.avi_certificatemanagementprofile:
+        avi_credentials: "{{ avi_credentials | default(omit) }}"
+        name: VaultCertManager
+        run_script_ref: /api/alertscriptconfig?name=VaultCertManager
+        script_params:
+        - is_dynamic: false
+          is_sensitive: false
+          name: "vault_addr"
+          value: "https://192.168.11.30:8200"
+        - is_dynamic: false
+          is_sensitive: true
+          name: "vault_token"
+          value: "hvs.aMZLqgQmCYkWuU8t9Nug4upk"
+        - is_dynamic: false
+          is_sensitive: false
+          name: "vault_path"
+          value: "/v1/pki_int/sign/ca-2024"
+

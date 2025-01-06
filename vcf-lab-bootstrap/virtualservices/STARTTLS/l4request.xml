@@ -1,0 +1,54 @@
+-- Set force_use_tls = false to allow connections that do not invoke STARTTLS
+local force_use_tls = true
+local state = avi.connection.get_var("state")
+-- execute only if the current state is to process a server response
+if string.find(state, "client") == 1 then
+  local msg_received = false
+  local num_bytes = 1
+  local size = 0
+  local msg
+  -- read msg from the socket buffer ensuring msg is one or more complete message lines
+  while not (msg_received) do
+    size = avi.l4.collect(num_bytes)
+    msg = avi.l4.read(size)
+    if string.sub(msg, -2) == '\r\n' then
+      msg_received = true
+    else
+      num_bytes = size + 1
+    end
+  end
+
+  if msg ~= nil then
+    if state == "client-ehlo" then
+      -- Client has sent EHLO; expect EHLO OK response from server next
+      if string.find(string.lower(msg), "ehlo") == 1 then
+        avi.connection.set_var("state", "server-services")
+      end
+    elseif state == "client-servicessent" then
+      -- Server has sent EHLO OK; client may now invoke STARTTLS
+      if string.lower(msg) == "starttls\r\n" then
+        -- Client sent STARTTLS verb; discard this (do not send to server) and respond directly to client with 220 response and enable SSL offload
+        avi.l4.discard(size)
+        avi.l4.send("220 Ready to start TLS\r\n")
+        avi.ssl.enable_ssl()
+        avi.connection.set_var("state", "done")
+        avi.vs.log("Client initiated TLS\r\n")
+        -- DataScript no longer needs to be invoked for the rest of this connection
+        avi.vs.ds_done()
+      elseif force_use_tls == true then
+        -- Client's first command is not STARTTLS and we want to enforce TLS
+        -- Send error response and close connection
+        avi.vs.log("Client did not invoke STARTTLS; rejecting connection\r\n", avi.SIG_ENABLE)
+        avi.l4.send("530 Must issue a STARTTLS command first\r\n")
+        avi.vs.close_conn()
+      elseif string.lower(msg) == "data\r\n" then
+        -- Client is sending e-mail body without invoking STARTTLS
+        -- We are not enforcing TLS, so just log this fact
+        avi.connection.set_var("state", "done")
+        avi.vs.log("Client started sending DATA without STARTTLS\r\n")
+        -- DataScript no longer needs to be invoked for the rest of this connection
+        avi.vs.ds_done()
+      end
+    end
+  end
+end

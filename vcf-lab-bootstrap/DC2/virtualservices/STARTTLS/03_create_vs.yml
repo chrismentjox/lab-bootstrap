@@ -1,0 +1,32 @@
+# Copyright 2018 VMware, Inc.
+# SPDX-License-Identifier: BSD-2-Clause OR GPL-3.0-only
+---
+- hosts: localhost
+  become: no 
+  vars_files:
+    - build_lb_vars.yml
+  collections:
+    - vmware.alb
+  tasks:
+     - name: Create virtualservice 
+       avi_virtualservice:
+        controller: "{{ avi_controller }}"
+        username: "{{ avi_username }}"
+        password: "{{ avi_password }}"
+        api_version: "{{avi_api_version}}"
+        state: "{{ state}}"
+        name: "{{ item.vs_name }}"
+        performance_limits:
+          max_concurrent_connections: 1000
+        application_profile_ref: '/api/applicationprofile?name={{ httpprofile_name }}'
+        services: "{{ item.service_ports }}"
+        pool_ref: '/api/pool?name={{ item.pool_name }}'
+        vsvip_ref: '/api/vsvip/?name={{ item.vsvip_name }}'
+        tenant_ref: '/api/tenant/?name={{ tenant }}'
+        cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
+        vs_datascripts:
+          - index: 0 
+            vs_datascript_set_ref: '/api/vsdatascriptset/?name=starttls'
+
+       with_items:
+         - "{{ avi_vips }}"

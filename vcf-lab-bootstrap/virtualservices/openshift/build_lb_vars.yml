@@ -1,13 +1,14 @@
 {
-        "avi_controller": "192.168.11.71",
+        "avi_controller": "https://sfo-w01-avi01.sfo.rainpole.io/",
         "avi_username": "admin",
-        "avi_password": "VMware1!",
-        "avi_api_version": "22.1.4",
-        "avi_cloud_id": "no-orchestrator",
+        "avi_password": "VMw@re1!VMw@re1!",
+        "avi_api_version": "22.1.6",
+        "avi_cloud_id": "sfo-w01-nsx01",
+        "avi_t1_id": "/infra/tier-1s/1bd32969-4d1c-46c4-b371-d239e89b9de0",
         "state": "present",
         "tenant": "admin",
         "httpprofile_name": "System-L4-Application",
-        "vip_placement_network": "vip-segment",
+        "vip_placement_network": "sfo-w01-seg01-avi-data",
 
         "avi_vips": [
                 {
