@@ -5,24 +5,24 @@ avi_default_password: "VMware1!"
 old_password: "58NFaGDJm(PJH0G"
 vcenter_password: "VMware1!"
 ldapbind_password: "{{ avi_admin_password }}"
-controller_name: "avi01a.vmlab.local"
-controller_ip: "192.168.11.71"
+controller_name: "sfo-w01-avlb01.sfo.rainpole.io"
+controller_ip: "10.11.10.151"
 controller_mask: "255.255.255.0"
-controller_gw: "192.168.11.1"
-cloud_name: "vcsa01a"
+controller_gw: "10.11.10.1"
+cloud_name: "sfo-w01-nsx01"
 cloud_name_no_access: "no-orchestrator"
 
 avi_credentials:
   controller: "{{ controller_ip }}"
   username: "admin"
   password: "{{ avi_admin_password }}"
-  api_version: "22.1.6"
+  api_version: "30.2.2"
 
 cloud_config:
   use_content_lib: true
   content_lib:
-    name: "avi"
-    id: "3b6c89c4-d8ea-4808-8928-2c2f58371a47"
+    name: "Avi"
+    id: "1ae4ac1c-46d8-41fd-a9c3-9b0f7355743f"
 
 ipam_config:
   - name: "vip-segment"
@@ -54,9 +54,9 @@ ipam_config:
 
 system_configuration:
   dns_configuration:
-    search_domain: "vmlab.local"
+    search_domain: "sfo.rainpole.io"
     server_list:
-      - addr: "192.168.11.2"
+      - addr: "10.11.10.4"
         type: "V4"
   ntp_configuration:
     ntp_servers:
@@ -71,8 +71,8 @@ system_configuration:
 
 cloud_parameters:
   name: '{{ cloud_name | default("Default-Cloud") }}'
-  vcenter: "192.168.11.10"
-  username: "administrator@vsphere.local"
+  vcenter: "sfo-w01-vc01.sfo.rainpole.io"
+  username: "administrator@sfo-w01.local"
   password: "{{ vcenter_password }}"
   datacenter: "Datacenter"
   datastore: "vsanDatastore"

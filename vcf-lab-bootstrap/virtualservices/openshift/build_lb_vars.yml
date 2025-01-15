@@ -1,10 +1,10 @@
 {
-        "avi_controller": "https://sfo-w01-avi01.sfo.rainpole.io/",
+        "avi_controller": "https://sfo-w01-avlb01.sfo.rainpole.io/",
         "avi_username": "admin",
         "avi_password": "VMw@re1!VMw@re1!",
         "avi_api_version": "22.1.6",
         "avi_cloud_id": "sfo-w01-nsx01",
-        "avi_t1_id": "/infra/tier-1s/1bd32969-4d1c-46c4-b371-d239e89b9de0",
+        "avi_t1_id": "/infra/tier-1s/sfo-w01-mgmt01",
         "state": "present",
         "tenant": "admin",
         "httpprofile_name": "System-L4-Application",
