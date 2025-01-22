@@ -32,7 +32,7 @@
       vmware.alb.avi_cloud:
         avi_credentials: "{{ avi_credentials | default(omit) }}"
         api_context: "{{ avi_api_context | default(omit) }}"
-        dhcp_enabled: false
+        dhcp_enabled: true
         ipam_provider_ref: "{{ ipamprovider.obj.url }}"
         dns_provider_ref: '{{ "/api/ipamdnsproviderprofile/?name=VMware-DNS-" + cloud_parameters.name if create_dns_provider else None }}'
         name: "nsx01a"
@@ -43,17 +43,17 @@
               manual:
                 tier1_lrs:
                 - segment_id: "/infra/segments/se-datasegment"
-                  tier1_lr_id: "/infra/tier-1s/t1"
+                  tier1_lr_id: "/infra/tier-1s/sfo-w01-mgmt"
               segment_config_mode: "TIER1_SEGMENT_MANUAL"
-            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/a18d6fa9-ef30-4c44-b8a8-bf45c6b32360"
+            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/f8e028af-e2d1-4b1d-a327-8aedb998a10b"
             tz_type: "OVERLAY"
           management_network_config:
             overlay_segment:
               segment_id: "/infra/segments/avi-se"
-              tier1_lr_id: "/infra/tier-1s/t1"
-            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/a18d6fa9-ef30-4c44-b8a8-bf45c6b32360"
+              tier1_lr_id: "/infra/tier-1s/sfo-w01-mgmt"
+            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/f8e028af-e2d1-4b1d-a327-8aedb998a10b"
             tz_type: "OVERLAY"
-          nsxt_credentials_ref: "https://avi01a.vmlab.local/api/cloudconnectoruser/cloudconnectoruser-f9dbe3f3-c6b7-4135-8ff0-8ccc14e3e95d"
+          nsxt_credentials_ref: "/api/cloudconnectoruser/?name=svc-sfo-w01-avlb01-sfo-w01-nsx01"
           nsxt_url: "192.168.11.21"
           site_id: "default"
           domain_id: "default"
@@ -111,7 +111,7 @@
         api_context: "{{ avi_api_context | default(omit) }}"
         name: "{{ item.name }}"
         cloud_ref: '{{ "/api/cloud/?name=" + cloud_parameters.name }}'
-        dhcp_enabled: false
+        dhcp_enabled: "{{ item.dhcp_enabled }}"
         ip6_autocfg_enabled: false
         exclude_discovered_subnets: true
         configured_subnets:

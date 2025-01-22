@@ -1,7 +1,7 @@
 # code: language=ansible
 ---
-avi_admin_password: "VMware1!"
-avi_default_password: "VMware1!"
+avi_admin_password: "VMw@re1!VMw@re1!"
+avi_default_password: "VMw@re1!VMw@re1!"
 old_password: "58NFaGDJm(PJH0G"
 vcenter_password: "VMware1!"
 ldapbind_password: "{{ avi_admin_password }}"
@@ -22,32 +22,34 @@ cloud_config:
   use_content_lib: true
   content_lib:
     name: "Avi"
-    id: "1ae4ac1c-46d8-41fd-a9c3-9b0f7355743f"
+    id: "e6770201-26ec-47d3-bd9a-a8ec971a4a87"
 
 ipam_config:
-  - name: "vip-segment"
-    addr: "192.168.35.0"
+  - name: "vip-network"
+    addr: "192.168.32.0"
     mask: 24
+    dhcp_enabled: false
     static_ip_ranges:
       - range:
           begin:
-            addr: "192.168.35.200"
+            addr: "192.168.32.200"
             type: "V4"
           end:
-            addr: "192.168.35.240"
+            addr: "192.168.32.240"
             type: "V4"
         type: "STATIC_IPS_FOR_VIP"
     add_to_ipam: true
   - name: "avi-se"
-    addr: "192.168.30.0"
+    addr: "192.168.33.0"
     mask: 24
+    dhcp_enabled: true
     static_ip_ranges:
       - range:
           begin:
-            addr: "192.168.30.51"
+            addr: "192.168.33.51"
             type: "V4"
           end:
-            addr: "192.168.30.70"
+            addr: "192.168.33.70"
             type: "V4"
         type: "STATIC_IPS_FOR_SE"
     add_to_ipam: false
