@@ -35,7 +35,7 @@
         dhcp_enabled: true
         ipam_provider_ref: "{{ ipamprovider.obj.url }}"
         dns_provider_ref: '{{ "/api/ipamdnsproviderprofile/?name=VMware-DNS-" + cloud_parameters.name if create_dns_provider else None }}'
-        name: "nsx01a"
+        name: "{{ cloud_name }}"
         nsxt_configuration:
           automate_dfw_rules: false
           data_network_config:
@@ -45,16 +45,16 @@
                 - segment_id: "/infra/segments/se-datasegment"
                   tier1_lr_id: "/infra/tier-1s/sfo-w01-mgmt"
               segment_config_mode: "TIER1_SEGMENT_MANUAL"
-            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/f8e028af-e2d1-4b1d-a327-8aedb998a10b"
+            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/ff608ccf-cc78-4172-9ee4-57eca6d66204"
             tz_type: "OVERLAY"
           management_network_config:
             overlay_segment:
               segment_id: "/infra/segments/avi-se"
               tier1_lr_id: "/infra/tier-1s/sfo-w01-mgmt"
-            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/f8e028af-e2d1-4b1d-a327-8aedb998a10b"
+            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/ff608ccf-cc78-4172-9ee4-57eca6d66204"
             tz_type: "OVERLAY"
           nsxt_credentials_ref: "/api/cloudconnectoruser/?name=svc-sfo-w01-avlb01-sfo-w01-nsx01"
-          nsxt_url: "192.168.11.21"
+          nsxt_url: "{{ nsxt_url }}"
           site_id: "default"
           domain_id: "default"
           enforcementpoint_id: "default"

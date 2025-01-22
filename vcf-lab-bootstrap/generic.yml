@@ -4,6 +4,7 @@ avi_admin_password: "VMw@re1!VMw@re1!"
 avi_default_password: "VMw@re1!VMw@re1!"
 old_password: "58NFaGDJm(PJH0G"
 vcenter_password: "VMware1!"
+nsxt_url: "sfo-w01-nsx01.sfo.rainpole.io"
 ldapbind_password: "{{ avi_admin_password }}"
 controller_name: "sfo-w01-avlb01.sfo.rainpole.io"
 controller_ip: "10.11.10.151"
@@ -50,6 +51,20 @@ ipam_config:
             type: "V4"
           end:
             addr: "192.168.33.70"
+            type: "V4"
+        type: "STATIC_IPS_FOR_SE"
+    add_to_ipam: false
+  - name: "se-datasegment"
+    addr: "192.168.34.0"
+    mask: 24
+    dhcp_enabled: true
+    static_ip_ranges:
+      - range:
+          begin:
+            addr: "192.168.34.51"
+            type: "V4"
+          end:
+            addr: "192.168.34.70"
             type: "V4"
         type: "STATIC_IPS_FOR_SE"
     add_to_ipam: false
