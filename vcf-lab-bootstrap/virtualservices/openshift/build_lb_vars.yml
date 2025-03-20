@@ -2,20 +2,21 @@
         "avi_controller": "https://sfo-w01-avlb01.sfo.rainpole.io/",
         "avi_username": "admin",
         "avi_password": "VMw@re1!VMw@re1!",
-        "avi_api_version": "22.1.6",
+        "avi_api_version": "31.1.1",
         "avi_cloud_id": "sfo-w01-nsx01",
-        "avi_t1_id": "/infra/tier-1s/sfo-w01-mgmt01",
+        "avi_t1_id": "/infra/tier-1s/sfo-w01-mgmt",
+        "se_group_ref": "active-standby",
         "state": "present",
         "tenant": "admin",
         "httpprofile_name": "System-L4-Application",
-        "vip_placement_network": "sfo-w01-seg01-avi-data",
+        "vip_placement_network": "avi-se",
 
         "avi_vips": [
                 {
                         "vsvip_name": "okd-ingress",
                         "vs_name" : "okd_http_ingress_traffic_fe",
                         "pool_name": "okd_http_ingress_traffic_be",
-                        "vip_ip": "192.168.34.102",
+                        "vip_ip": "10.10.10.102",
                         "service_ports": [
                            {
                            "port": "80"
@@ -26,7 +27,7 @@
                         "vsvip_name": "okd-ingress",
                         "vs_name" : "okd_https_ingress_traffic_fe",
                         "pool_name": "okd_https_ingress_traffic_be",
-                        "vip_ip": "192.168.34.102",
+                        "vip_ip": "10.10.10.102",
                         "service_ports": [
                            {
                            "port": "443"
@@ -37,7 +38,7 @@
                         "vsvip_name": "okd-vip",
                         "vs_name" : "okd_k8s_api_fe",
                         "pool_name": "okd_k8s_api_be",
-                        "vip_ip": "192.168.34.101",
+                        "vip_ip": "10.10.10.101",
                         "service_ports": [
                            {
                            "port": "6443"
@@ -48,7 +49,7 @@
                         "vsvip_name": "okd-vip",
                         "vs_name" : "okd_machine_config_server_fe",
                         "pool_name": "okd_machine_config_server_be",
-                        "vip_ip": "192.168.34.101",
+                        "vip_ip": "10.10.10.101",
                         "service_ports": [
                            {
                            "port": "22623"
@@ -64,11 +65,11 @@
                        "default_server_port": 443,
                        "pool_members": [
                                {
-                                       "ip": { "addr": 192.168.36.105, "type": V4 },
+                                       "ip": { "addr": 192.168.37.12, "type": V4 },
                                        "hostname": "cm-worker01",
                                },
                                {
-                                       "ip": { "addr": 192.168.36.106, "type": V4 },
+                                       "ip": { "addr": 192.168.37.13, "type": V4 },
                                        "hostname": "cm-worker02",
                                },
                         ],
@@ -79,11 +80,11 @@
                        "default_server_port": 80,
                        "pool_members": [
                                {
-                                       "ip": { "addr": 192.168.36.105, "type": V4 },
+                                       "ip": { "addr": 192.168.37.12, "type": V4 },
                                        "hostname": "cm-worker01",
                                },
                                {
-                                       "ip": { "addr": 192.168.36.106, "type": V4 },
+                                       "ip": { "addr": 192.168.37.13, "type": V4 },
                                        "hostname": "cm-worker02",
                                },
                         ],
@@ -94,20 +95,12 @@
                        "default_server_port": 6443,
                        "pool_members": [
                                {
-                                       "ip": { "addr": 192.168.36.101, "type": V4 },
+                                       "ip": { "addr": 192.168.37.10, "type": V4 },
                                        "hostname": "okd-bootstrap",
                                },
                                {
-                                       "ip": { "addr": 192.168.36.102, "type": V4 },
+                                       "ip": { "addr": 192.168.37.11, "type": V4 },
                                        "hostname": "cm-master01",
-                               },
-                               {
-                                       "ip": { "addr": 192.168.36.103, "type": V4 },
-                                       "hostname": "cm-master02",
-                               },
-                               {
-                                       "ip": { "addr": 192.168.36.104, "type": V4 },
-                                       "hostname": "cm-master03",
                                },
 
                         ],
@@ -118,20 +111,12 @@
                        "default_server_port": 22623,
                        "pool_members": [
                                {
-                                       "ip": { "addr": 192.168.36.101, "type": V4 },
+                                       "ip": { "addr": 192.168.37.10, "type": V4 },
                                        "hostname": "okd-bootstrap",
                                },
                                {
-                                       "ip": { "addr": 192.168.36.102, "type": V4 },
+                                       "ip": { "addr": 192.168.37.11, "type": V4 },
                                        "hostname": "cm-master01",
-                               },
-                               {
-                                       "ip": { "addr": 192.168.36.103, "type": V4 },
-                                       "hostname": "cm-master02",
-                               },
-                               {
-                                       "ip": { "addr": 192.168.36.104, "type": V4 },
-                                       "hostname": "cm-master03",
                                },
 
                         ],

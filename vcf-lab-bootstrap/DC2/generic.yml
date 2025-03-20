@@ -1,62 +1,79 @@
 # code: language=ansible
 ---
-avi_admin_password: "VMware1!"
-avi_default_password: "VMware1!"
+avi_admin_password: "VMw@re1!"
+avi_default_password: "VMw@re1!"
 old_password: "58NFaGDJm(PJH0G"
 vcenter_password: "VMware1!"
+nsxt_url: "sfo-w01-nsx01.sfo.rainpole.io"
 ldapbind_password: "{{ avi_admin_password }}"
-controller_name: "avi01b.vmlab.local"
-controller_ip: "192.168.11.72"
+controller_name: "sfo-w02-avlb01.sfo.rainpole.io"
+controller_ip: "10.11.10.181"
 controller_mask: "255.255.255.0"
-controller_gw: "192.168.11.1"
-cloud_name: "vcsa01a"
+controller_gw: "10.11.10.1"
+cloud_name: "sfo-w01-nsx01"
 cloud_name_no_access: "no-orchestrator"
 
 avi_credentials:
   controller: "{{ controller_ip }}"
   username: "admin"
   password: "{{ avi_admin_password }}"
-  api_version: "22.1.6"
+  api_version: "31.1.1"
 
 cloud_config:
   use_content_lib: true
   content_lib:
-    name: "avi"
-    id: "3b6c89c4-d8ea-4808-8928-2c2f58371a47"
+    name: "Avi"
+    id: "e6770201-26ec-47d3-bd9a-a8ec971a4a87"
 
 ipam_config:
-  - name: "dc2-vip-segment"
-    addr: "192.168.135.0"
+  - name: "vip-network"
+    addr: "192.168.32.0"
     mask: 24
+    dhcp_enabled: false
     static_ip_ranges:
       - range:
           begin:
-            addr: "192.168.135.200"
+            addr: "192.168.32.200"
             type: "V4"
           end:
-            addr: "192.168.135.240"
+            addr: "192.168.32.240"
             type: "V4"
         type: "STATIC_IPS_FOR_VIP"
     add_to_ipam: true
   - name: "avi-se"
-    addr: "192.168.130.0"
+    addr: "192.168.33.0"
     mask: 24
+    dhcp_enabled: true
     static_ip_ranges:
       - range:
           begin:
-            addr: "192.168.30.71"
+            addr: "192.168.33.51"
             type: "V4"
           end:
-            addr: "192.168.30.80"
+            addr: "192.168.33.70"
+            type: "V4"
+        type: "STATIC_IPS_FOR_SE"
+    add_to_ipam: false
+  - name: "se-datasegment"
+    addr: "192.168.34.0"
+    mask: 24
+    dhcp_enabled: true
+    static_ip_ranges:
+      - range:
+          begin:
+            addr: "192.168.34.51"
+            type: "V4"
+          end:
+            addr: "192.168.34.70"
             type: "V4"
         type: "STATIC_IPS_FOR_SE"
     add_to_ipam: false
 
 system_configuration:
   dns_configuration:
-    search_domain: "nordic.fqdn.nl"
+    search_domain: "sfo.rainpole.io"
     server_list:
-      - addr: "192.168.11.2"
+      - addr: "10.11.10.4"
         type: "V4"
   ntp_configuration:
     ntp_servers:
@@ -71,8 +88,8 @@ system_configuration:
 
 cloud_parameters:
   name: '{{ cloud_name | default("Default-Cloud") }}'
-  vcenter: "192.168.11.10"
-  username: "administrator@vsphere.local"
+  vcenter: "sfo-w01-vc01.sfo.rainpole.io"
+  username: "administrator@sfo-w01.local"
   password: "{{ vcenter_password }}"
   datacenter: "Datacenter"
   datastore: "vsanDatastore"

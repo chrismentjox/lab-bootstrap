@@ -13,9 +13,9 @@
       vmware.alb.avi_ipamdnsproviderprofile:
         avi_credentials: "{{ avi_credentials | default(omit) }}"
         api_context: "{{ avi_api_context | default(omit) }}"
+        internal_profile: {}
         name: '{{ "VMware-IPAM-" + cloud_parameters.name }}'
         type: "IPAMDNS_TYPE_INTERNAL"
-        internal_profile: {}
         allocate_ip_in_vrf: false
       register: ipamprovider
 

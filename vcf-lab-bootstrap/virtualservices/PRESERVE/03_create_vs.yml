@@ -24,6 +24,9 @@
         vsvip_ref: '/api/vsvip/?name={{ item.vsvip_name }}'
         tenant_ref: '/api/tenant/?name={{ tenant }}'
         cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
-        se_group_ref: '/api/serviceenginegroup/?name={{ se_group_ref }}'
+        vs_datascripts:
+          - index: 0 
+            vs_datascript_set_ref: '/api/vsdatascriptset/?name=starttls'
+
        with_items:
          - "{{ avi_vips }}"

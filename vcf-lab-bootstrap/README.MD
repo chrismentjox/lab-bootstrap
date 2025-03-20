@@ -94,3 +94,85 @@ platform:
 publish: External
 pullSecret: '<get this infor from redhat>'
 sshKey: 'ssh-rsa AAAAB...................'
+
+
+
+NGINX page
+in the default-site
+server {
+    listen 80;
+    server_name your_server_ip_or_domain;
+
+    location /test {
+        root /usr/share/nginx/html;
+        index test.html;
+    }
+
+    location /api/info {
+        default_type application/json;
+        add_header Content-Type application/json;
+        return 200 '{
+            "client_ip": "$remote_addr",
+            "server_ip": "$server_addr",
+            "hostname": "$hostname",
+            "x_forwarded_for": "$http_x_forwarded_for",
+            "headers": "$http_user_agent",
+            "cookies": "$http_cookie"
+        }';
+    }
+}
+
+
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client & Server Info</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        h1 { color: #007bff; }
+        .info-box { border: 1px solid #ddd; padding: 15px; margin: 10px auto; width: 50%; text-align: left; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>Client & Server Info</h1>
+    <div class="info-box">
+        <p><strong>Client IP:</strong> <span id="client-ip">Loading...</span></p>
+        <p><strong>Server IP:</strong> <span id="server-ip">Loading...</span></p>
+        <p><strong>Hostname:</strong> <span id="hostname">Loading...</span></p>
+        <p><strong>X-Forwarded-For:</strong> <span id="xff">Loading...</span></p>
+        <p><strong>Headers:</strong></p>
+        <pre id="headers">Loading...</pre>
+        <p><strong>Cookies:</strong></p>
+        <pre id="cookies">Loading...</pre>
+    </div>
+
+    <script>
+        fetch('/api/info')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('client-ip').innerText = data.client_ip || "Not Available";
+            document.getElementById('server-ip').innerText = data.server_ip || "Not Available";
+            document.getElementById('hostname').innerText = data.hostname || "Not Available";
+            document.getElementById('xff').innerText = data.x_forwarded_for || "None";
+            document.getElementById('headers').innerText = data.headers || "No Headers";
+            document.getElementById('cookies').innerText = data.cookies || "No Cookies";
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            document.getElementById('client-ip').innerText = "Error";
+            document.getElementById('server-ip').innerText = "Error";
+            document.getElementById('hostname').innerText = "Error";
+            document.getElementById('xff').innerText = "Error";
+            document.getElementById('headers').innerText = "Error";
+            document.getElementById('cookies').innerText = "Error";
+        });
+    </script>
+
+</body>
+</html>
+
