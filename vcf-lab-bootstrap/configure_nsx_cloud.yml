@@ -46,13 +46,13 @@
                 - segment_id: "/infra/segments/se-datasegment"
                   tier1_lr_id: "/infra/tier-1s/sfo-w01-mgmt"
               segment_config_mode: "TIER1_SEGMENT_MANUAL"
-            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/ff608ccf-cc78-4172-9ee4-57eca6d66204"
+            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/0eb271e2-c800-42de-97d7-8a1f314f508d"
             tz_type: "OVERLAY"
           management_network_config:
             overlay_segment:
               segment_id: "/infra/segments/avi-se"
               tier1_lr_id: "/infra/tier-1s/sfo-w01-mgmt"
-            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/ff608ccf-cc78-4172-9ee4-57eca6d66204"
+            transport_zone: "/infra/sites/default/enforcement-points/default/transport-zones/0eb271e2-c800-42de-97d7-8a1f314f508d"
             tz_type: "OVERLAY"
           nsxt_credentials_ref: "/api/cloudconnectoruser/?name=svc-sfo-w01-avlb01-sfo-w01-nsx01"
           nsxt_url: "{{ nsxt_url }}"
@@ -73,9 +73,9 @@
         params:
           name: "{{ cloud_parameters.name }}"
       register: cloudruntime
-      until: cloudruntime.obj.results[0].network_sync_complete
-      retries: 30
-      delay: 5
+        # until: cloudruntime.obj.results[0].network_sync_complete
+        #retries: 30
+        #delay: 5
 
     - name: "Configure cloud management network"
       vmware.alb.avi_cloud:

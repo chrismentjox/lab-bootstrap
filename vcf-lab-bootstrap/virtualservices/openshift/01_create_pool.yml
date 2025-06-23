@@ -18,7 +18,8 @@
         name: "{{ item.pool_name }}"
         tenant_ref: '/api/tenant/?name={{ tenant }}'
         cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
-        tier1_lr: '{{ avi_t1_id }}'
+          #tier1_lr: '{{ avi_t1_id }}'
+        vrf_ref: '/api/vrfcontext/?name=t1-domain-c9:f0e25117-875a-4689-96ab-b18d7fe91e3b-chris-rtr'
         health_monitor_refs:
           - '/api/healthmonitor?name={{ item.healthmonitor_name }}'
         lb_algorithm: LB_ALGORITHM_LEAST_CONNECTIONS

@@ -18,7 +18,8 @@
         name: "{{ item.vsvip_name }}"
         tenant_ref: '/api/tenant/?name={{ tenant }}'
         cloud_ref: '/api/cloud/?name={{ avi_cloud_id }}'
-        tier1_lr: '{{ avi_t1_id }}'
+          #tier1_lr: '{{ avi_t1_id }}'
+        vrf_context_ref: '/api/vrfcontext/?name=t1-domain-c9:f0e25117-875a-4689-96ab-b18d7fe91e3b-chris-rtr'
         vip:
           - vip_id: 1
             enabled: true
