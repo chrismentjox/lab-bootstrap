@@ -14,6 +14,7 @@
         username: "{{ avi_username }}"
         password: "{{ avi_password }}"
         api_version: "{{avi_api_version}}"
+        tenant: "{{ tenant }}"
         state: "{{ state}}"
         name: "{{ item.vs_name }}"
         performance_limits:
